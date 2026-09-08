@@ -2,7 +2,7 @@ FROM node:20-alpine AS build
 
 WORKDIR /app
 COPY package*.json ./
-RUN npm ci
+RUN npm ci --no-audit --no-fund
 COPY . .
 ARG REACT_APP_API_BASE_URL=http://localhost:8080
 ENV REACT_APP_API_BASE_URL=$REACT_APP_API_BASE_URL

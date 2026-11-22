@@ -1,8 +1,19 @@
 import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
-function Navbar() {
+function Navbar({ darkMode, onToggleTheme }) {
   const [open, setOpen] = useState(false);
+  const [authenticated, setAuthenticated] = useState(
+    () => Boolean(window.sessionStorage.getItem('finbank-token'))
+  );
+  const navigate = useNavigate();
+
+  const logout = () => {
+    window.sessionStorage.removeItem('finbank-token');
+    setAuthenticated(false);
+    setOpen(false);
+    navigate('/');
+  };
 
   const links = [
     { to: '/', label: 'Home' },
@@ -41,7 +52,27 @@ function Navbar() {
               {link.label}
             </NavLink>
           ))}
+          {authenticated ? (
+            <button className="nav-logout" type="button" onClick={logout}>Log out</button>
+          ) : (
+            <>
+              <NavLink to="/login" onClick={() => setOpen(false)}>Log in</NavLink>
+              <NavLink className="nav-signup" to="/signup" onClick={() => setOpen(false)}>
+                Sign up
+              </NavLink>
+            </>
+          )}
         </nav>
+        <button
+          className="theme-toggle"
+          type="button"
+          onClick={onToggleTheme}
+          aria-label="Toggle dark mode"
+          aria-pressed={darkMode}
+          title={`Switch to ${darkMode ? 'light' : 'dark'} mode`}
+        >
+          <span aria-hidden="true">{darkMode ? '☀' : '☾'}</span>
+        </button>
       </div>
     </header>
   );

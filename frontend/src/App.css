@@ -1,11 +1,30 @@
 :root {
-  --primary: #4f46e5;
-  --primary-dark: #4338ca;
-  --dark: #111827;
-  --gray: #6b7280;
-  --light-bg: #f9fafb;
-  --border: #e5e7eb;
+  color-scheme: light;
+  --primary: #174579;
+  --primary-dark: #10345d;
+  --link: #174579;
+  --text: #172b45;
+  --gray: #61728a;
+  --light-bg: #f3f6fa;
+  --border: #dce5ef;
+  --page-bg: #f8fafc;
+  --surface: #ffffff;
+  --dark-surface: #102b4c;
   --radius: 12px;
+}
+
+[data-theme='dark'] {
+  color-scheme: dark;
+  --primary: #285f96;
+  --primary-dark: #1d4e7e;
+  --link: #8dbbfa;
+  --text: #e8eff8;
+  --gray: #a8b8ce;
+  --light-bg: #16243a;
+  --border: #2c405b;
+  --page-bg: #0b1424;
+  --surface: #101e32;
+  --dark-surface: #08172b;
 }
 
 * { box-sizing: border-box; }
@@ -13,11 +32,17 @@
 body {
   margin: 0;
   font-family: 'Segoe UI', Roboto, -apple-system, BlinkMacSystemFont, sans-serif;
-  color: var(--dark);
-  background: #fff;
+  color: var(--text);
+  background: var(--page-bg);
   line-height: 1.6;
 }
 
+.app-shell {
+  min-height: 100vh;
+  background: var(--page-bg);
+  color: var(--text);
+  transition: background-color 180ms ease, color 180ms ease;
+}
 a { text-decoration: none; color: inherit; }
 ul { list-style: none; margin: 0; padding: 0; }
 
@@ -29,12 +54,597 @@ ul { list-style: none; margin: 0; padding: 0; }
 
 .section { padding: 4rem 1.5rem; }
 
+/* FinBank dashboard */
+.finbank-dashboard {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 253px minmax(0, 1fr);
+  background: var(--page-bg);
+}
+.finbank-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  color: #fff;
+  font-size: 1.35rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+.finbank-brand-mark {
+  width: 24px;
+  height: 34px;
+  display: inline-grid;
+  place-items: center;
+  color: #26b7ff;
+  font-size: 1.8rem;
+  font-style: normal;
+  line-height: 1;
+}
+.finbank-brand small {
+  display: block;
+  margin-top: 0.7rem;
+  color: #a9c5e5;
+  font-size: 0.7rem;
+  font-weight: 400;
+}
+.finbank-logout {
+  padding: 0.55rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.finbank-content {
+  width: 100%;
+  margin: 0;
+  padding: 2.5rem clamp(1.5rem, 7.3vw, 7rem);
+}
+.finbank-app-body { min-width: 0; }
+.finbank-sidebar {
+  min-height: 100vh;
+  padding: 1.1rem 1rem;
+  background: #0a2b54;
+}
+.finbank-sidebar > .finbank-brand {
+  margin: 0 0 3.4rem 0.2rem;
+  font-size: 1.3rem;
+}
+.finbank-sidebar-heading {
+  margin: 0;
+  padding: 0.35rem 0.75rem 0.8rem;
+  color: var(--gray);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.finbank-main { min-width: 0; }
+.finbank-topbar {
+  min-height: 58px;
+  padding: 0 clamp(1.5rem, 4vw, 3.25rem);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+.finbank-search {
+  width: min(345px, 42vw);
+  height: 42px;
+  padding: 0 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: #7390b0;
+}
+.finbank-search > span { font-size: 1.1rem; }
+.finbank-search input {
+  width: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 0.8rem;
+}
+.finbank-search input::placeholder { color: #8299b5; }
+.finbank-eyebrow {
+  margin: 0 0 0.65rem;
+  color: #2563eb;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+.finbank-content h1 {
+  margin: 0;
+  font-size: clamp(1.65rem, 2vw, 2rem);
+  letter-spacing: -0.045em;
+}
+.finbank-lead { margin: 0.65rem 0 2rem; color: var(--gray); }
+.finbank-account-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  padding: 2rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: 0 12px 30px rgb(23 43 69 / 6%);
+}
+.finbank-account-card > div { display: grid; gap: 0.35rem; }
+.finbank-card-label { color: var(--gray); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; }
+.finbank-account-card strong { overflow-wrap: anywhere; }
+.finbank-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: #16835d;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+.finbank-status span { width: 8px; height: 8px; border-radius: 50%; background: #20b47a; }
+.finbank-header-user { margin-left: auto; margin-right: 1.25rem; color: var(--gray); font-size: 0.88rem; font-weight: 600; }
+.finbank-header-user > span { width: 32px; height: 32px; margin-right: 0.55rem; display: inline-grid; place-items: center; border-radius: 50%; background: #e8f1ff; color: #176bc2; font-weight: 750; }
+.finbank-theme-toggle {
+  width: 38px;
+  height: 38px;
+  flex: 0 0 auto;
+  display: inline-grid;
+  place-items: center;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 1.05rem;
+  cursor: pointer;
+}
+.finbank-theme-toggle:hover, .finbank-logout:hover { border-color: var(--link); color: var(--link); }
+.finbank-theme-toggle:focus-visible, .finbank-logout:focus-visible { outline: 3px solid var(--link); outline-offset: 3px; }
+.finbank-tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+.finbank-tabs button {
+  width: 100%;
+  min-height: 54px;
+  padding: 0.7rem 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  text-align: left;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: #c5d7ee;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 450;
+  cursor: pointer;
+}
+.finbank-tabs button:hover { color: #fff; background: rgb(255 255 255 / 8%); }
+.finbank-tabs button.active {
+  background: #176bc2;
+  color: #fff;
+  font-weight: 700;
+}
+.finbank-nav-icon { width: 18px; color: #9dc9ff; font-size: 1rem; text-align: center; }
+.finbank-tabs button.active .finbank-nav-icon { color: #fff; }
+.finbank-no-nav-results { margin: 0.5rem; color: #c5d7ee; font-size: 0.78rem; }
+.finbank-tabs button:focus-visible, .finbank-row-action:focus-visible, .finbank-primary-button:focus-visible {
+  outline: 3px solid var(--link);
+  outline-offset: 2px;
+}
+.finbank-tab-panel { min-height: 240px; outline: none; }
+.finbank-tab-panel:focus-visible { outline: 3px solid var(--link); outline-offset: 4px; border-radius: 8px; }
+.finbank-summary-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+.finbank-summary-card {
+  display: grid;
+  gap: 0.4rem;
+  padding: 1.4rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+.finbank-summary-card span { color: var(--gray); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; }
+.finbank-summary-card strong { font-size: 1.65rem; }
+.finbank-overview { display: grid; gap: 1rem; }
+.finbank-overview-hero {
+  position: relative;
+  min-height: 250px;
+  padding: clamp(1.35rem, 3vw, 2rem);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  border-radius: 18px;
+  background: linear-gradient(118deg, #0b2b50 0%, #14599a 65%, #1a70b5 100%);
+  color: #fff;
+  box-shadow: 0 16px 36px rgb(16 43 76 / 16%);
+}
+.finbank-overview-hero-content { position: relative; z-index: 1; width: min(60%, 540px); display: grid; justify-items: start; }
+.finbank-overview-kicker { margin-bottom: 1.35rem; color: #bad8f7; font-size: 0.67rem; font-weight: 800; letter-spacing: 0.13em; }
+.finbank-overview-balance-label { color: #d3e6f8; font-size: 0.82rem; }
+.finbank-overview-balance { margin-top: 0.15rem; font-size: clamp(2rem, 4vw, 2.8rem); line-height: 1.2; letter-spacing: -0.055em; }
+.finbank-overview-account-count { margin-top: 0.45rem; color: #c3dcf4; font-size: 0.78rem; }
+.finbank-overview-actions { margin-top: 1.35rem; display: flex; flex-wrap: wrap; gap: 0.65rem; }
+.finbank-overview-actions button {
+  min-height: 38px;
+  padding: 0.5rem 0.8rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border: 1px solid rgb(255 255 255 / 28%);
+  border-radius: 8px;
+  background: rgb(255 255 255 / 11%);
+  color: #fff;
+  font: inherit;
+  font-size: 0.76rem;
+  font-weight: 650;
+  cursor: pointer;
+  transition: background-color 160ms ease, transform 160ms ease;
+}
+.finbank-overview-actions button:hover { transform: translateY(-1px); background: rgb(255 255 255 / 20%); }
+.finbank-overview-actions button:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+.finbank-overview-art { position: absolute; right: 3%; bottom: -5%; width: min(42%, 340px); opacity: 0.75; }
+.finbank-hero-orb { position: absolute; border: 1px solid rgb(255 255 255 / 12%); border-radius: 50%; pointer-events: none; }
+.finbank-hero-orb-one { width: 240px; height: 240px; right: 1%; top: -40%; }
+.finbank-hero-orb-two { width: 180px; height: 180px; right: 25%; bottom: -55%; }
+.finbank-overview-metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.85rem; }
+.finbank-overview-metric { min-width: 0; min-height: 106px; padding: 1rem; display: flex; align-items: flex-start; gap: 0.8rem; border: 1px solid var(--border); border-radius: 13px; background: var(--surface); }
+.finbank-metric-icon { width: 36px; height: 36px; flex: 0 0 auto; display: grid; place-items: center; border-radius: 11px; background: #e7f7ef; color: #16835d; font-size: 1.05rem; font-weight: 800; }
+.finbank-metric-icon.is-debit { background: #fff0ef; color: #cc5148; }
+.finbank-metric-icon.is-blue { background: #e9f1ff; color: #2868bd; }
+.finbank-overview-metric > div { min-width: 0; display: grid; gap: 0.1rem; }
+.finbank-overview-metric > div > span { color: var(--gray); font-size: 0.72rem; font-weight: 650; }
+.finbank-overview-metric strong { overflow: hidden; color: var(--text); font-size: clamp(1rem, 1.6vw, 1.35rem); text-overflow: ellipsis; white-space: nowrap; }
+.finbank-overview-metric small { color: var(--gray); font-size: 0.67rem; }
+.finbank-overview-activity { overflow: hidden; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); }
+.finbank-overview-activity-heading { padding: 1rem 1.15rem 0.55rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+.finbank-overview-activity-heading h2 { margin: 0; font-size: 1rem; }
+.finbank-overview-activity-heading p { margin: 0.2rem 0 0; color: var(--gray); font-size: 0.72rem; }
+.finbank-overview-activity-heading button { padding: 0.4rem 0; display: inline-flex; align-items: center; gap: 0.35rem; border: 0; background: none; color: var(--link); font: inherit; font-size: 0.76rem; font-weight: 700; cursor: pointer; }
+.finbank-overview-activity-heading button:focus-visible { outline: 2px solid var(--link); outline-offset: 3px; border-radius: 4px; }
+.finbank-overview-activity-list { padding: 0 1.15rem 0.4rem; }
+.finbank-overview-activity-row { min-height: 64px; display: grid; grid-template-columns: 38px minmax(0, 1fr) auto; align-items: center; gap: 0.75rem; border-top: 1px solid var(--border); }
+.finbank-overview-activity-description { min-width: 0; display: grid; gap: 0.15rem; }
+.finbank-overview-activity-description strong { overflow: hidden; font-size: 0.79rem; text-overflow: ellipsis; white-space: nowrap; }
+.finbank-overview-activity-description span, .finbank-overview-activity-amount time { color: var(--gray); font-size: 0.67rem; }
+.finbank-overview-activity-amount { display: grid; justify-items: end; gap: 0.1rem; }
+.finbank-overview-activity-amount strong { font-size: 0.78rem; white-space: nowrap; }
+.finbank-overview-activity-amount strong.is-credit { color: #16835d; }
+.finbank-overview-activity-amount strong.is-debit { color: var(--text); }
+.finbank-transfer-grid { display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(230px, 0.9fr); gap: 1.25rem; align-items: stretch; }
+.finbank-transfer-form { margin-top: 0; padding: 1.5rem 1.35rem; }
+.finbank-transfer-modes { display: flex; gap: 1.5rem; margin-bottom: 1rem; border-bottom: 1px solid var(--border); overflow-x: auto; }
+.finbank-transfer-modes button { flex: 0 0 auto; padding: 0.45rem 0.1rem 0.75rem; border: 0; border-bottom: 2px solid transparent; background: transparent; color: var(--gray); font: inherit; font-size: 0.78rem; cursor: pointer; }
+.finbank-transfer-modes button.active { border-bottom-color: #1473d2; color: #1473d2; font-weight: 700; }
+.finbank-transfer-modes button:disabled { opacity: 0.6; cursor: not-allowed; }
+.finbank-transfer-form .finbank-form-fields { grid-template-columns: 1fr; gap: 1rem; }
+.finbank-transfer-form .finbank-form-fields label { font-size: 0.76rem; }
+.finbank-transfer-form .finbank-form-fields input, .finbank-transfer-form .finbank-form-fields select { min-height: 44px; background: var(--surface); }
+.finbank-transfer-form .finbank-primary-button { width: 100%; min-height: 48px; margin-top: 0.7rem; }
+.finbank-add-beneficiary { display: block; margin: 0.7rem 0 0 auto; border: 0; background: none; color: #1473d2; font: inherit; font-size: 0.76rem; cursor: pointer; }
+.finbank-add-beneficiary:hover { text-decoration: underline; }
+.finbank-recent-beneficiaries { min-height: 100%; padding: 1.5rem 1.35rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); }
+.finbank-recent-beneficiaries h2 { margin: 0 0 1rem; font-size: 0.95rem; }
+.finbank-beneficiary-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.8rem 0; border-bottom: 1px solid var(--border); }
+.finbank-beneficiary-item:last-child { border-bottom: 0; }
+.finbank-beneficiary-avatar { width: 36px; height: 36px; flex: 0 0 auto; display: grid; place-items: center; border-radius: 50%; background: #e7f1ff; color: #176bc2; font-weight: 700; }
+.finbank-beneficiary-item strong, .finbank-beneficiary-item small { display: block; }
+.finbank-beneficiary-item strong { font-size: 0.8rem; }
+.finbank-beneficiary-item small { margin-top: 0.15rem; color: var(--gray); font-size: 0.7rem; }
+.finbank-charts { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin-top: 0.25rem; }
+.finbank-chart-card { min-width: 0; padding: 1.25rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); }
+.finbank-chart-heading { min-height: 54px; display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; }
+.finbank-chart-heading h2 { margin: 0; font-size: 1rem; }
+.finbank-chart-heading p { margin: 0.25rem 0 0; color: var(--gray); font-size: 0.76rem; }
+.finbank-chart-total { color: var(--link); font-size: 0.86rem; font-weight: 750; white-space: nowrap; }
+.finbank-chart-legend { display: flex; align-items: center; gap: 0.35rem; color: var(--gray); font-size: 0.7rem; white-space: nowrap; }
+.finbank-credit-dot, .finbank-debit-dot { width: 8px; height: 8px; margin-left: 0.25rem; border-radius: 50%; background: #16a879; }
+.finbank-debit-dot { background: #ef6a62; }
+.finbank-allocation { min-height: 190px; display: grid; grid-template-columns: minmax(120px, 0.8fr) minmax(0, 1.2fr); align-items: center; gap: 0.65rem; }
+.finbank-donut-wrap { width: min(100%, 170px); aspect-ratio: 1; position: relative; justify-self: center; }
+.finbank-donut-chart { width: 100%; height: 100%; overflow: visible; }
+.finbank-donut-chart circle { transition: stroke-dasharray 260ms ease, stroke-dashoffset 260ms ease; }
+.finbank-donut-track { fill: none; stroke: var(--light-bg); stroke-width: 15; }
+.finbank-donut-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; pointer-events: none; }
+.finbank-donut-center strong { font-size: 1.35rem; line-height: 1.2; }
+.finbank-donut-center span { color: var(--gray); font-size: 0.67rem; }
+.finbank-allocation-legend { display: grid; gap: 0.75rem; }
+.finbank-allocation-item { min-width: 0; display: grid; grid-template-columns: 10px minmax(0, 1fr) auto; align-items: center; column-gap: 0.45rem; }
+.finbank-allocation-swatch { width: 9px; height: 9px; border-radius: 50%; }
+.finbank-allocation-name { min-width: 0; overflow: hidden; color: var(--gray); font-size: 0.71rem; text-overflow: ellipsis; white-space: nowrap; }
+.finbank-allocation-item strong { font-size: 0.72rem; }
+.finbank-allocation-value { grid-column: 2 / -1; color: var(--text); font-size: 0.78rem; font-weight: 700; }
+.finbank-cashflow-summary { margin: 0.65rem 0 0.1rem; display: flex; gap: 1.2rem; }
+.finbank-cashflow-summary > div { display: grid; grid-template-columns: 9px auto; align-items: center; column-gap: 0.4rem; color: var(--gray); font-size: 0.68rem; }
+.finbank-cashflow-summary strong { grid-column: 2; color: var(--text); font-size: 0.9rem; }
+.finbank-cashflow-dot { width: 8px; height: 8px; grid-row: span 2; border-radius: 50%; background: #16a879; }
+.finbank-cashflow-dot.is-debit { background: #ef6a62; }
+.finbank-chart-scroll { width: 100%; overflow-x: auto; }
+.finbank-balance-chart { display: block; width: 100%; min-width: 520px; height: auto; margin-top: 1rem; overflow: visible; }
+.finbank-transaction-chart { display: block; width: 100%; min-width: 420px; height: auto; margin-top: 0.3rem; overflow: visible; }
+.finbank-chart-label { fill: var(--gray); font-size: 12px; }
+.finbank-chart-value { fill: var(--text); font-size: 11px; font-weight: 650; }
+.finbank-chart-track { fill: var(--light-bg); }
+.finbank-chart-bar { fill: #3978db; }
+.finbank-chart-axis { stroke: var(--border); stroke-width: 1.5; }
+.finbank-chart-gridline { stroke: var(--border); stroke-width: 1; stroke-dasharray: 4 5; }
+.finbank-credit-bar { fill: #16a879; }
+.finbank-debit-bar { fill: #ef6a62; }
+.finbank-chart-empty { margin: 1.5rem 0 0.25rem; color: var(--gray); font-size: 0.85rem; }
+.finbank-table-wrap { width: 100%; overflow-x: auto; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); }
+.finbank-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.84rem; }
+.finbank-table th, .finbank-table td { min-width: 110px; padding: 0.85rem 1rem; border-bottom: 1px solid var(--border); }
+.finbank-table th { background: var(--light-bg); color: var(--gray); font-size: 0.72rem; font-weight: 750; text-transform: capitalize; }
+.finbank-table tbody tr:last-child td { border-bottom: 0; }
+.finbank-table td { overflow-wrap: anywhere; }
+.finbank-empty, .finbank-profile-copy { color: var(--gray); }
+.finbank-feedback { margin: 0 0 1rem; padding: 0.8rem 1rem; border-radius: 8px; font-size: 0.86rem; }
+.finbank-feedback-error { border: 1px solid #f0c5c5; background: #fff3f2; color: #a33333; }
+.finbank-feedback-success { border: 1px solid #b9e2d2; background: #ecf9f3; color: #176b50; }
+.finbank-row-action { padding: 0.45rem 0.7rem; border: 1px solid var(--border); border-radius: 7px; background: var(--surface); color: var(--link); font: inherit; font-size: 0.78rem; font-weight: 650; cursor: pointer; }
+.finbank-row-action:disabled { opacity: 0.55; cursor: not-allowed; }
+.finbank-feature-form { margin-top: 1.5rem; padding: 1.5rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); }
+.finbank-feature-form h3 { margin: 0 0 1rem; font-size: 1rem; }
+.finbank-form-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.finbank-form-fields label { display: grid; gap: 0.4rem; color: var(--gray); font-size: 0.8rem; font-weight: 650; }
+.finbank-form-fields input, .finbank-form-fields select {
+  width: 100%;
+  min-height: 43px;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--page-bg);
+  color: var(--text);
+  font: inherit;
+}
+.finbank-primary-button { margin-top: 1rem; padding: 0.7rem 1rem; border: 0; border-radius: 8px; background: #2563eb; color: #fff; font: inherit; font-weight: 700; cursor: pointer; }
+.finbank-primary-button:disabled { opacity: 0.6; cursor: wait; }
+
+.finbank-account-grid, .finbank-bank-card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(245px, 1fr)); gap: 1rem; }
+.finbank-account-tile {
+  min-height: 205px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #d5e0ed;
+  border-radius: 16px;
+  background: linear-gradient(140deg, #0b2d56, #145da0);
+  color: #fff;
+  box-shadow: 0 14px 30px rgb(16 43 76 / 14%);
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+.finbank-account-tile:hover, .finbank-bank-card:hover { transform: translateY(-3px); box-shadow: 0 18px 34px rgb(16 43 76 / 18%); }
+.finbank-account-tile-top, .finbank-account-tile-bottom { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.finbank-account-symbol { width: 35px; height: 35px; display: grid; place-items: center; border: 1px solid rgb(255 255 255 / 28%); border-radius: 11px; font-size: 1.1rem; font-weight: 800; }
+.finbank-account-kind { padding: 0.3rem 0.55rem; border-radius: 999px; background: rgb(255 255 255 / 14%); font-size: 0.68rem; font-weight: 750; letter-spacing: 0.08em; }
+.finbank-account-tile p { margin: 1.2rem 0 0.2rem; color: #c6dbf3; font-size: 0.75rem; }
+.finbank-account-balance { font-size: 1.6rem; letter-spacing: -0.035em; }
+.finbank-account-tile-bottom { margin-top: auto; padding-top: 1rem; color: #d3e2f5; font-size: 0.72rem; }
+.finbank-account-tile-bottom span:last-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.finbank-transaction-section, .finbank-statement-list { overflow: hidden; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); }
+.finbank-list-heading { padding: 1.2rem 1.25rem 0.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.finbank-list-heading h2 { margin: 0; font-size: 1rem; }
+.finbank-list-heading p { margin: 0.3rem 0; color: var(--gray); font-size: 0.78rem; }
+.finbank-list-heading > span { flex: 0 0 auto; color: var(--gray); font-size: 0.75rem; }
+.finbank-transaction-filters { padding: 0.75rem 1.25rem; display: flex; gap: 0.7rem; border-bottom: 1px solid var(--border); }
+.finbank-transaction-filters input, .finbank-transaction-filters select {
+  width: 100%; min-height: 40px; padding: 0.55rem 0.75rem; border: 1px solid var(--border); border-radius: 8px; background: var(--page-bg); color: var(--text); font: inherit; font-size: 0.78rem;
+}
+.finbank-transaction-filters label:first-child { flex: 1; }
+.finbank-transaction-filters label:last-child { width: min(190px, 38%); }
+.finbank-activity-row { min-height: 72px; padding: 0.75rem 1.25rem; display: grid; grid-template-columns: 38px minmax(130px, 1fr) minmax(90px, 0.55fr) auto; align-items: center; gap: 0.85rem; border-bottom: 1px solid var(--border); }
+.finbank-activity-row:last-child { border-bottom: 0; }
+.finbank-activity-icon { width: 36px; height: 36px; display: grid; place-items: center; border-radius: 50%; background: #e8f7f0; color: #14825b; font-size: 1rem; font-weight: 800; }
+.finbank-activity-icon.is-debit { background: #fff0ef; color: #cc5148; }
+.finbank-activity-description { min-width: 0; display: grid; gap: 0.25rem; }
+.finbank-activity-description strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 0.82rem; }
+.finbank-activity-description span, .finbank-activity-row time { color: var(--gray); font-size: 0.72rem; }
+.finbank-activity-amount { white-space: nowrap; font-size: 0.82rem; }
+.finbank-activity-amount.is-credit { color: #16835d; }
+.finbank-activity-amount.is-debit { color: var(--text); }
+.finbank-bank-card {
+  min-height: 230px;
+  padding: 1.35rem;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 18px;
+  background: radial-gradient(circle at 90% 15%, rgb(91 160 219 / 45%), transparent 35%), linear-gradient(135deg, #0c2d55, #184d86 62%, #246ca6);
+  color: #fff;
+  box-shadow: 0 14px 30px rgb(16 43 76 / 14%);
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+.finbank-bank-card-top, .finbank-bank-card-bottom, .finbank-bank-card-actions { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.finbank-bank-card-top { color: #e9f4ff; font-size: 0.83rem; font-weight: 750; letter-spacing: 0.08em; text-transform: uppercase; }
+.finbank-bank-card-top span:last-child { font-size: 0.67rem; }
+.finbank-card-chip { margin: 1.15rem 0 0.7rem; color: #d5e9f8; font-size: 1.35rem; }
+.finbank-card-number { font-size: 1.1rem; letter-spacing: 0.09em; }
+.finbank-bank-card-bottom { margin-top: auto; padding-top: 1.25rem; font-size: 0.75rem; text-transform: uppercase; }
+.finbank-bank-card-bottom span { display: grid; gap: 0.2rem; }
+.finbank-bank-card-bottom small { color: #c6dbf3; font-size: 0.58rem; letter-spacing: 0.08em; }
+.finbank-bank-card-actions { margin-top: 1rem; padding-top: 0.75rem; border-top: 1px solid rgb(255 255 255 / 18%); }
+.finbank-card-status { width: fit-content; color: #18845f; font-size: 0.68rem; font-weight: 750; text-transform: capitalize; }
+.finbank-bank-card .finbank-card-status { color: #b7f4d7; }
+.finbank-card-status.status-frozen, .finbank-card-status.status-overdue { color: #da6d55; }
+.finbank-card-status.status-closed { color: var(--gray); }
+.finbank-bank-card .finbank-row-action { border-color: rgb(255 255 255 / 36%); background: rgb(255 255 255 / 10%); color: #fff; }
+.finbank-cards-page { margin-top: 1.15rem; }
+.finbank-cards-heading { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; }
+.finbank-cards-heading h2 { margin: 0; font-size: 1.1rem; }
+.finbank-cards-heading p { margin: 0.15rem 0 0; color: var(--gray); font-size: 0.78rem; }
+.finbank-card-summary { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.75rem; margin-bottom: 1rem; }
+.finbank-card-summary > div { min-height: 68px; padding: 0.75rem; display: flex; align-items: center; gap: 0.65rem; border: 1px solid var(--border); border-radius: 10px; background: var(--surface); }
+.finbank-card-summary > div > span:last-child { display: grid; color: var(--gray); font-size: 0.7rem; }
+.finbank-card-summary strong { color: var(--text); font-size: 1.05rem; line-height: 1.3; }
+.finbank-card-summary-icon { width: 31px; height: 31px; display: grid; place-items: center; border-radius: 9px; background: #e9f1ff; color: #2868bd; font-size: 0.95rem; font-weight: 800; }
+.finbank-card-summary-icon.is-active { background: #e7f7ef; color: #16835d; }
+.finbank-card-summary-icon.is-frozen { background: #fff4e5; color: #a5630a; }
+.finbank-apply-card { min-height: 38px; padding: 0.55rem 0.8rem; display: inline-flex; align-items: center; gap: 0.4rem; border: 0; border-radius: 6px; background: #1976d2; color: #fff; font: inherit; font-size: 0.72rem; font-weight: 700; cursor: pointer; }
+.finbank-apply-card:hover { background: #1264b7; }
+.finbank-apply-card span { font-size: 1rem; }
+.finbank-apply-card:focus-visible { outline: 3px solid var(--link); outline-offset: 3px; }
+.finbank-card-type-tabs { display: flex; gap: 1.5rem; border-bottom: 1px solid var(--border); }
+.finbank-card-type-tabs button { padding: 0.7rem 0.6rem; display: inline-flex; align-items: center; gap: 0.4rem; border: 0; border-bottom: 2px solid transparent; background: none; color: var(--gray); font: inherit; font-size: 0.76rem; cursor: pointer; }
+.finbank-card-type-tabs button span { min-width: 20px; padding: 0.05rem 0.35rem; border-radius: 999px; background: var(--light-bg); color: var(--gray); font-size: 0.64rem; text-align: center; }
+.finbank-card-type-tabs button.active { border-color: #1976d2; color: #176bc2; font-weight: 700; }
+.finbank-card-type-tabs button.active span { background: #e8f1ff; color: #176bc2; }
+.finbank-card-type-tabs button:focus-visible, .finbank-card-quick-actions button:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+.finbank-cards-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(200px, 0.38fr); gap: 1rem; margin-top: 1rem; align-items: start; }
+.finbank-cards-list { display: grid; gap: 1rem; }
+.finbank-card-management { display: grid; grid-template-columns: minmax(220px, 0.95fr) minmax(180px, 0.85fr); gap: 1.15rem; padding: 1rem; border: 1px solid var(--border); border-radius: 10px; background: var(--surface); }
+.finbank-card-management .finbank-bank-card { min-height: 190px; padding: 1rem; border-radius: 12px; }
+.finbank-finbank-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: linear-gradient(128deg, #f8fbff 0%, #e8f1fb 45%, #d4e4f5 100%);
+  color: #173a68;
+  box-shadow: inset 0 0 0 1px rgb(22 66 119 / 10%), 0 9px 20px rgb(13 43 84 / 13%);
+}
+.finbank-finbank-card.is-credit { background: linear-gradient(128deg, #fff8f4 0%, #f6e5e2 48%, #ead1d4 100%); }
+.finbank-finbank-card > :not(.hdfc-card-watermark) { position: relative; z-index: 1; }
+.finbank-card-brand-mark { width: 23px; height: 23px; flex: 0 0 auto; display: grid; place-items: center; border-radius: 6px; background: #174579; color: #fff; font-size: 1rem; font-style: italic; font-weight: 800; }
+.finbank-card-brand { display: flex; align-items: center; gap: 0.48rem; }
+.hdfc-card-mark { width: 23px; height: 23px; flex: 0 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); align-items: center; gap: 1px; overflow: hidden; border: 1px solid #d5dce7; border-radius: 4px; background: #fff; }
+.hdfc-card-mark i { width: 7px; height: 7px; display: block; border-radius: 50%; background: #ed1c24; }
+.hdfc-card-mark i:nth-child(2) { width: 8px; height: 8px; background: #fff; box-shadow: 0 0 0 1.5px #ed1c24; }
+.hdfc-card-mark i:nth-child(3) { background: #1767a8; }
+.finbank-card-brand strong, .finbank-card-brand small { display: block; }
+.finbank-card-brand strong { color: #174477; font-size: 0.68rem; font-weight: 850; letter-spacing: 0.06em; }
+.finbank-card-brand small { margin-top: 0.08rem; color: #657f9d; font-size: 0.43rem; }
+.hdfc-card-product { position: absolute !important; top: 1.07rem; right: 1rem; color: #627d9d; font-size: 0.48rem; font-weight: 750; letter-spacing: 0.08em; }
+.finbank-finbank-card .hdfc-card-chip { width: 28px; height: 21px; margin: 0.82rem 0 0.52rem; display: grid; grid-template-columns: repeat(2, 1fr); overflow: hidden; border: 1px solid #c5a95f; border-radius: 5px; background: linear-gradient(145deg, #f8eab9, #caa94e); }
+.hdfc-card-chip i { border: 1px solid rgb(138 108 38 / 40%); }
+.finbank-finbank-card .finbank-card-number { color: #193b67; font-size: 0.8rem; letter-spacing: 0.11em; }
+.hdfc-card-bottom { margin-top: auto; padding-top: 0.65rem; display: flex; align-items: end; gap: 0.75rem; }
+.hdfc-card-bottom > span { display: grid; gap: 0.12rem; color: #173a68; font-size: 0.54rem; font-weight: 750; letter-spacing: 0.04em; }
+.hdfc-card-bottom small { color: #6a829d; font-size: 0.4rem; font-weight: 500; letter-spacing: 0.06em; }
+.hdfc-card-bottom > span:nth-child(2) { margin-left: auto; }
+.hdfc-card-network { color: #174477; font-size: 0.76rem; font-style: italic; font-weight: 900; }
+.hdfc-card-watermark { position: absolute; z-index: 0; right: -27px; bottom: -79px; width: 190px; height: 190px; border: 22px solid rgb(27 84 145 / 8%); border-radius: 50%; }
+.finbank-finbank-card.is-credit .hdfc-card-watermark { border-color: rgb(191 44 58 / 9%); }
+.finbank-card-management .finbank-card-chip { margin: 0.75rem 0 0.45rem; }
+.finbank-card-management .finbank-card-number { font-size: 0.94rem; }
+.finbank-card-management .finbank-bank-card-bottom { padding-top: 0.8rem; font-size: 0.68rem; }
+.finbank-card-management .finbank-bank-card-bottom span:last-child { align-items: flex-end; }
+.finbank-card-details { display: grid; align-content: center; gap: 0.15rem; }
+.finbank-card-status-row { min-height: 34px; display: flex; align-items: center; justify-content: space-between; gap: 0.6rem; border-bottom: 1px solid var(--border); color: var(--gray); font-size: 0.69rem; }
+.finbank-card-status-row:last-child { border-bottom: 0; }
+.finbank-card-status-row > strong { color: var(--text); font-size: 0.69rem; font-weight: 650; text-align: right; }
+.finbank-status-pill { display: inline-flex; align-items: center; gap: 0.3rem; padding: 0.16rem 0.45rem; border-radius: 999px; background: #e7f7ef; color: #18845f !important; text-transform: capitalize; }
+.finbank-status-pill i { width: 6px; height: 6px; border-radius: 50%; background: #20b47a; }
+.finbank-status-pill.status-frozen { background: #fff4e5; color: #a5630a !important; }
+.finbank-status-pill.status-frozen i { background: #df9b32; }
+.finbank-status-pill.status-blocked { background: #fff0ef; color: #b7423b !important; }
+.finbank-status-pill.status-blocked i { background: #df5c54; }
+.finbank-switch { width: 31px; height: 17px; padding: 2px; display: flex; justify-content: flex-start; border: 0; border-radius: 999px; background: #b9c6d6; cursor: pointer; }
+.finbank-switch > span { width: 13px; height: 13px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgb(0 0 0 / 20%); transition: transform 150ms ease; }
+.finbank-switch.is-on { justify-content: flex-end; background: #1976d2; }
+.finbank-switch:disabled { opacity: 0.5; cursor: not-allowed; }
+.finbank-card-quick-actions { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.5rem; padding-top: 0.55rem; border-top: 1px solid var(--border); }
+.finbank-card-quick-actions button { min-width: 0; padding: 0.45rem 0.25rem; display: grid; justify-items: center; gap: 0.2rem; border: 0; border-radius: 7px; background: transparent; color: #176bc2; font: inherit; font-size: 0.95rem; cursor: pointer; }
+.finbank-card-quick-actions button span { color: var(--gray); font-size: 0.61rem; }
+.finbank-card-quick-actions button:hover:not(:disabled) { background: var(--light-bg); }
+.finbank-card-quick-actions button:disabled { color: #93a6bc; cursor: not-allowed; }
+.finbank-card-quick-actions button:disabled span { color: #93a6bc; }
+.finbank-card-side-panel { min-height: 150px; padding: 1rem; border: 1px solid var(--border); border-radius: 10px; background: var(--surface); }
+.finbank-card-side-panel h3 { margin: 0; font-size: 0.88rem; }
+.finbank-card-side-panel > p { margin: 0.45rem 0 1rem; color: var(--gray); font-size: 0.72rem; line-height: 1.55; }
+.finbank-card-security-note { display: flex; align-items: flex-start; gap: 0.55rem; padding: 0.7rem; border-radius: 8px; background: var(--light-bg); color: #16835d; }
+.finbank-card-security-note > span:first-child { width: 20px; height: 20px; flex: 0 0 auto; display: grid; place-items: center; border-radius: 50%; background: #d7f1e4; font-size: 0.7rem; }
+.finbank-card-security-note strong, .finbank-card-security-note small { display: block; }
+.finbank-card-security-note strong { color: var(--text); font-size: 0.67rem; }
+.finbank-card-security-note small { margin-top: 0.15rem; color: var(--gray); font-size: 0.62rem; }
+.finbank-card-empty { min-height: 230px; margin-top: 1rem; display: grid; align-content: center; justify-items: center; padding: 1.5rem; border: 1px dashed var(--border); border-radius: 10px; background: var(--surface); text-align: center; }
+.finbank-card-empty > span { width: 46px; height: 46px; display: grid; place-items: center; border-radius: 50%; background: #e8f1ff; color: #176bc2; font-size: 1.4rem; }
+.finbank-card-empty h3 { margin: 0.8rem 0 0.2rem; font-size: 0.95rem; }
+.finbank-card-empty p { max-width: 350px; margin: 0; color: var(--gray); font-size: 0.76rem; }
+.finbank-modal-backdrop { position: fixed; z-index: 1000; inset: 0; padding: 1rem; display: grid; place-items: center; background: rgb(5 24 48 / 55%); }
+.finbank-card-application { position: relative; width: min(100%, 430px); padding: 1.6rem; border: 1px solid var(--border); border-radius: 14px; background: var(--surface); box-shadow: 0 24px 70px rgb(0 0 0 / 24%); }
+.finbank-modal-close { position: absolute; top: 0.7rem; right: 0.8rem; width: 34px; height: 34px; border: 0; border-radius: 50%; background: var(--light-bg); color: var(--gray); font-size: 1.4rem; line-height: 1; cursor: pointer; }
+.finbank-modal-close:disabled { opacity: 0.5; cursor: wait; }
+.finbank-application-icon { width: 44px; height: 44px; display: grid; place-items: center; border-radius: 12px; background: #e8f1ff; color: #176bc2; font-size: 1.35rem; }
+.finbank-card-application h2 { margin: 1rem 0 0.35rem; font-size: 1.2rem; }
+.finbank-card-application > p { margin: 0; color: var(--gray); font-size: 0.82rem; line-height: 1.55; }
+.finbank-card-application form { margin-top: 1.2rem; display: grid; gap: 0.55rem; }
+.finbank-card-application form label { color: var(--text); font-size: 0.78rem; font-weight: 650; }
+.finbank-card-application form input { width: 100%; min-height: 44px; padding: 0.65rem 0.75rem; border: 1px solid var(--border); border-radius: 8px; background: var(--page-bg); color: var(--text); font: inherit; }
+.finbank-card-application form input:focus { outline: 3px solid rgb(25 118 210 / 18%); border-color: #1976d2; }
+.finbank-card-application .finbank-primary-button { width: 100%; margin-top: 0.5rem; }
+.finbank-application-disclaimer { display: block; margin-top: 1rem; color: var(--gray); font-size: 0.67rem; line-height: 1.5; }
+.finbank-loan-list { display: grid; gap: 1rem; }
+.finbank-loan-card { padding: 1.25rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); }
+.finbank-loan-card-heading { display: flex; align-items: center; gap: 0.85rem; }
+.finbank-loan-mark { width: 42px; height: 42px; flex: 0 0 auto; display: grid; place-items: center; border-radius: 12px; background: #e8f1ff; color: #176bc2; font-size: 1.25rem; }
+.finbank-loan-card-heading h2 { margin: 0 0 0.25rem; font-size: 0.95rem; text-transform: capitalize; }
+.finbank-loan-card-heading > strong { margin-left: auto; text-align: right; white-space: nowrap; font-size: 1rem; }
+.finbank-loan-card-heading > strong small { display: block; margin-top: 0.2rem; color: var(--gray); font-size: 0.68rem; font-weight: 500; }
+.finbank-loan-progress { height: 7px; margin: 1.2rem 0 0.8rem; overflow: hidden; border-radius: 999px; background: var(--light-bg); }
+.finbank-loan-progress span { height: 100%; display: block; border-radius: inherit; background: linear-gradient(90deg, #176bc2, #48a0eb); }
+.finbank-loan-details { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; }
+.finbank-loan-details span { display: grid; gap: 0.3rem; color: var(--gray); font-size: 0.7rem; }
+.finbank-loan-details strong { color: var(--text); font-size: 0.8rem; }
+.finbank-statements-page { margin-bottom: 1rem; }
+.finbank-statements-heading { margin: 0 0 0.75rem; }
+.finbank-statements-heading h2 { margin: 0; font-size: 1rem; }
+.finbank-statements-heading p { margin: 0.2rem 0 0; color: var(--gray); font-size: 0.75rem; }
+.finbank-statements-empty { min-height: 120px; padding: 1rem; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 1px dashed var(--border); border-radius: var(--radius); background: var(--surface); text-align: center; }
+.finbank-statements-empty > strong { margin-top: 0.5rem; font-size: 0.82rem; }
+.finbank-statements-empty > p { margin: 0.15rem 0 0; color: var(--gray); font-size: 0.73rem; }
+.finbank-statement-row { min-height: 72px; padding: 0.75rem 1rem; display: flex; align-items: center; gap: 0.85rem; border-bottom: 1px solid var(--border); }
+.finbank-statement-row:last-child { border-bottom: 0; }
+.finbank-statement-icon { width: 38px; height: 38px; flex: 0 0 auto; display: grid; place-items: center; border-radius: 10px; background: #e8f1ff; color: #176bc2; }
+.finbank-statement-info { min-width: 0; display: grid; gap: 0.25rem; }
+.finbank-statement-info strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 0.8rem; }
+.finbank-statement-info small { color: var(--gray); font-size: 0.7rem; }
+.finbank-statement-row .finbank-row-action { margin-left: auto; flex: 0 0 auto; }
+.finbank-statement-actions { margin-left: auto; display: flex; flex: 0 0 auto; gap: 0.45rem; }
+.finbank-statement-download { min-width: 82px; text-align: center; }
+.finbank-statement-download:disabled { opacity: 0.65; cursor: wait; }
+.finbank-bill-categories { margin: 0 0 1rem; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.7rem; }
+.finbank-bill-category { min-height: 92px; padding: 0.9rem; display: grid; align-content: center; gap: 0.45rem; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); }
+.finbank-bill-category > span { color: #176bc2; font-size: 1.15rem; }
+.finbank-bill-category strong { font-size: 0.76rem; }
+.finbank-bill-history { margin-top: 1.25rem; }
+.finbank-bill-history h2 { margin: 0 0 0.6rem; font-size: 1rem; }
+.finbank-bill-history-row { min-height: 64px; padding: 0.65rem 0.8rem; display: flex; align-items: center; gap: 0.75rem; border-bottom: 1px solid var(--border); }
+.finbank-bill-history-row > span:nth-child(2) { min-width: 0; display: grid; gap: 0.15rem; }
+.finbank-bill-history-row > span:nth-child(2) strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 0.8rem; }
+.finbank-bill-history-row small { color: var(--gray); font-size: 0.68rem; }
+.finbank-bill-history-row > strong { margin-left: auto; white-space: nowrap; font-size: 0.8rem; }
+.finbank-feature-form input[type='number'] { appearance: textfield; }
+.finbank-feature-form input[type='month'] { color-scheme: light; }
+[data-theme='dark'] .finbank-feature-form input[type='month'] { color-scheme: dark; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.page-transition { animation: page-enter 380ms ease-out both; }
+
 /* Navbar */
 .navbar {
   border-bottom: 1px solid var(--border);
   position: sticky;
   top: 0;
-  background: #fff;
+  background: var(--surface);
   z-index: 100;
 }
 
@@ -48,7 +658,7 @@ ul { list-style: none; margin: 0; padding: 0; }
 .brand {
   font-size: 1.4rem;
   font-weight: 800;
-  color: var(--primary);
+  color: var(--link);
 }
 
 .nav-links {
@@ -65,8 +675,47 @@ ul { list-style: none; margin: 0; padding: 0; }
 
 .nav-links a.active,
 .nav-links a:hover {
-  color: var(--dark);
-  border-color: var(--primary);
+  color: var(--text);
+  border-color: var(--link);
+}
+
+.nav-links .nav-signup {
+  border: 1px solid var(--link);
+  border-radius: 8px;
+  padding: 0.4rem 0.8rem;
+  color: var(--link);
+}
+
+.nav-links .nav-logout {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.4rem 0.8rem;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+}
+.nav-links .nav-logout:hover { border-color: var(--link); color: var(--link); }
+
+.theme-toggle {
+  width: 38px;
+  height: 38px;
+  flex: 0 0 auto;
+  display: inline-grid;
+  place-items: center;
+  margin-left: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 1.15rem;
+  cursor: pointer;
+}
+.theme-toggle:hover { border-color: var(--link); }
+.theme-toggle:focus-visible,
+.menu-toggle:focus-visible {
+  outline: 3px solid var(--link);
+  outline-offset: 3px;
 }
 
 .menu-toggle {
@@ -82,13 +731,14 @@ ul { list-style: none; margin: 0; padding: 0; }
 .menu-toggle span {
   width: 24px;
   height: 2px;
-  background: var(--dark);
+  background: var(--text);
 }
 
 /* Hero */
 .hero {
-  background: linear-gradient(135deg, #eef2ff 0%, #ffffff 60%);
+  background: linear-gradient(135deg, #eaf1f8 0%, var(--page-bg) 68%);
 }
+[data-theme='dark'] .hero { background: linear-gradient(135deg, #152a45 0%, var(--page-bg) 72%); }
 
 .hero-inner {
   display: flex;
@@ -101,7 +751,7 @@ ul { list-style: none; margin: 0; padding: 0; }
 
 .eyebrow {
   display: inline-block;
-  color: var(--primary);
+  color: var(--link);
   font-weight: 700;
   text-transform: uppercase;
   font-size: 0.8rem;
@@ -141,8 +791,8 @@ ul { list-style: none; margin: 0; padding: 0; }
 .btn-primary:hover { background: var(--primary-dark); }
 
 .btn-outline {
-  border-color: var(--primary);
-  color: var(--primary);
+  border-color: var(--link);
+  color: var(--link);
 }
 .btn-outline:hover { background: var(--primary); color: #fff; }
 
@@ -155,11 +805,11 @@ ul { list-style: none; margin: 0; padding: 0; }
 }
 
 .hero-card {
-  background: #fff;
+  background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 1.25rem 1.5rem;
-  box-shadow: 0 10px 30px rgba(79, 70, 229, 0.08);
+  box-shadow: 0 10px 30px rgba(16, 43, 76, 0.08);
   font-weight: 600;
   width: 80%;
 }
@@ -174,7 +824,7 @@ ul { list-style: none; margin: 0; padding: 0; }
   padding: 3rem 1.5rem;
   text-align: center;
 }
-.stat h3 { font-size: 2.25rem; color: var(--primary); margin: 0; }
+.stat h3 { font-size: 2.25rem; color: var(--link); margin: 0; }
 .stat p { color: var(--gray); margin: 0.25rem 0 0; }
 
 /* Section heading */
@@ -201,6 +851,42 @@ ul { list-style: none; margin: 0; padding: 0; }
 .card h3 { margin-top: 0; }
 .card p { color: var(--gray); margin-bottom: 0; }
 
+.page-directory { margin-top: 5rem; }
+.page-link-card {
+  min-height: 190px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+.page-link-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--link);
+  box-shadow: 0 12px 28px rgba(16, 43, 76, 0.12);
+}
+.page-link-card:focus-visible {
+  outline: 3px solid var(--link);
+  outline-offset: 3px;
+}
+.page-link-title { font-size: 1.15rem; font-weight: 700; }
+.page-link-description { margin-top: 0.55rem; color: var(--gray); }
+.page-link-action {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 1.15rem;
+  color: var(--link);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+.page-link-action span { font-size: 1.1rem; transition: transform 180ms ease; }
+.page-link-card:hover .page-link-action span { transform: translateX(4px); }
+
 .team-card { text-align: center; }
 .avatar {
   width: 64px;
@@ -219,13 +905,13 @@ ul { list-style: none; margin: 0; padding: 0; }
 .project-card .project-thumb {
   height: 140px;
   border-radius: 8px;
-  background: linear-gradient(135deg, #4f46e5, #a5b4fc);
+  background: linear-gradient(135deg, #174579, #83a9d2);
   margin-bottom: 1rem;
 }
 .tag {
   display: inline-block;
   font-size: 0.75rem;
-  color: var(--primary);
+  color: var(--link);
   font-weight: 700;
   text-transform: uppercase;
   margin-bottom: 0.5rem;
@@ -234,7 +920,7 @@ ul { list-style: none; margin: 0; padding: 0; }
 /* CTA */
 .cta { padding: 2rem 1.5rem 5rem; }
 .cta-box {
-  background: var(--dark);
+  background: var(--dark-surface);
   color: #fff;
   border-radius: var(--radius);
   padding: 3rem;
@@ -282,13 +968,15 @@ ul { list-style: none; margin: 0; padding: 0; }
   border: 1px solid var(--border);
   font-family: inherit;
   font-size: 1rem;
+  background: var(--surface);
+  color: var(--text);
 }
 
 .form-success { color: #059669; font-weight: 600; }
 .form-error { color: #dc2626; font-weight: 600; }
 
 .contact-info {
-  background: var(--dark);
+  background: var(--dark-surface);
   color: #fff;
   border-radius: var(--radius);
   padding: 2rem;
@@ -297,7 +985,7 @@ ul { list-style: none; margin: 0; padding: 0; }
 
 /* Footer */
 .footer {
-  background: var(--dark);
+  background: var(--dark-surface);
   color: #d1d5db;
   padding: 3rem 1.5rem 1rem;
 }
@@ -311,7 +999,7 @@ ul { list-style: none; margin: 0; padding: 0; }
 .footer h4 { color: #fff; margin-bottom: 0.5rem; }
 .copyright {
   text-align: center;
-  border-top: 1px solid #374151;
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
   padding-top: 1rem;
   font-size: 0.85rem;
 }
@@ -323,6 +1011,12 @@ ul { list-style: none; margin: 0; padding: 0; }
   .stats { grid-template-columns: repeat(2, 1fr); }
   .contact-grid { grid-template-columns: 1fr; }
   .footer-inner { grid-template-columns: 1fr 1fr; }
+  .finbank-transfer-grid { grid-template-columns: minmax(0, 1fr); }
+  .finbank-charts { grid-template-columns: 1fr; }
+  .finbank-cards-layout { grid-template-columns: minmax(0, 1fr); }
+  .finbank-card-management { grid-template-columns: minmax(0, 1fr); }
+  .finbank-card-management .finbank-bank-card { width: min(100%, 360px); }
+  .finbank-card-side-panel { min-height: 0; }
 }
 
 @media (max-width: 768px) {
@@ -331,13 +1025,28 @@ ul { list-style: none; margin: 0; padding: 0; }
   .hero-card { width: 100%; align-self: stretch !important; }
   .hero-text h1 { font-size: 2.1rem; }
 
+  .finbank-dashboard { grid-template-columns: minmax(0, 1fr); }
+  .finbank-sidebar { min-height: 0; padding: 0.8rem 1rem 0.65rem; }
+  .finbank-sidebar > .finbank-brand { margin: 0 0 0.8rem; }
+  .finbank-brand small { display: none; }
+  .finbank-tabs {
+    flex-direction: row;
+    overflow-x: auto;
+    scrollbar-width: thin;
+  }
+  .finbank-tabs button { width: auto; min-height: 42px; flex: 0 0 auto; gap: 0.5rem; white-space: nowrap; }
+  .finbank-tabs button.active { box-shadow: inset 0 -3px 0 #fff; }
+  .finbank-content { padding: 2rem 1.5rem; }
+  .finbank-topbar { min-height: 56px; padding: 0 1rem; }
+  .finbank-search { width: min(345px, 55vw); }
+
   .menu-toggle { display: flex; }
   .nav-links {
     position: absolute;
     top: 100%;
     left: 0;
     right: 0;
-    background: #fff;
+    background: var(--surface);
     flex-direction: column;
     gap: 0;
     border-bottom: 1px solid var(--border);
@@ -351,6 +1060,8 @@ ul { list-style: none; margin: 0; padding: 0; }
     border-bottom: 1px solid var(--border);
     width: 100%;
   }
+  .nav-links .nav-signup { margin: 0.5rem 1.5rem 1rem; width: calc(100% - 3rem); text-align: center; }
+  .nav-links .nav-logout { margin: 0.5rem 1.5rem 1rem; }
 }
 
 @media (max-width: 600px) {
@@ -358,4 +1069,49 @@ ul { list-style: none; margin: 0; padding: 0; }
   .stats { grid-template-columns: repeat(2, 1fr); }
   .form-row { grid-template-columns: 1fr; }
   .footer-inner { grid-template-columns: 1fr; }
+  .finbank-topbar .finbank-header-user { display: none; }
+  .finbank-search { width: 100%; }
+  .finbank-content { padding: 1.5rem 1rem; }
+  .finbank-account-card { grid-template-columns: 1fr; padding: 1.4rem; }
+  .finbank-summary-grid { grid-template-columns: 1fr; }
+  .finbank-overview-hero { min-height: 230px; }
+  .finbank-overview-hero-content { width: 80%; }
+  .finbank-overview-art { right: -2%; bottom: -1%; width: 47%; opacity: 0.52; }
+  .finbank-overview-metrics { grid-template-columns: 1fr; gap: 0.65rem; }
+  .finbank-overview-metric { min-height: 76px; padding: 0.75rem; }
+  .finbank-charts { grid-template-columns: 1fr; }
+  .finbank-allocation { grid-template-columns: minmax(100px, 0.7fr) minmax(0, 1.3fr); }
+  .finbank-overview-activity-list { padding-inline: 0.8rem; }
+  .finbank-overview-activity-row { grid-template-columns: 34px minmax(0, 1fr) auto; gap: 0.5rem; }
+  .finbank-overview-activity-heading { padding-inline: 0.8rem; }
+  .finbank-card-summary { gap: 0.4rem; }
+  .finbank-card-summary > div { min-height: 62px; padding: 0.5rem; gap: 0.4rem; }
+  .finbank-card-summary-icon { width: 26px; height: 26px; flex: 0 0 auto; }
+  .finbank-card-summary > div > span:last-child { font-size: 0.64rem; }
+  .finbank-cards-heading { align-items: flex-start; }
+  .finbank-apply-card { font-size: 0.65rem; }
+  .finbank-form-fields { grid-template-columns: 1fr; }
+  .finbank-activity-row { grid-template-columns: 36px minmax(100px, 1fr) auto; gap: 0.6rem; padding-inline: 0.8rem; }
+  .finbank-activity-row time { display: none; }
+  .finbank-activity-amount { font-size: 0.75rem; }
+  .finbank-transaction-filters { flex-direction: column; padding-inline: 0.8rem; }
+  .finbank-transaction-filters label:last-child { width: 100%; }
+  .finbank-list-heading { align-items: flex-start; padding-inline: 0.8rem; }
+  .finbank-list-heading > span { padding-top: 0.15rem; }
+  .finbank-loan-details { grid-template-columns: 1fr 1fr; }
+  .finbank-bill-categories { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .finbank-statement-row { flex-wrap: wrap; }
+  .finbank-statement-actions { width: calc(100% - 3.1rem); margin-left: 3.1rem; }
+  .finbank-statement-download { flex: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

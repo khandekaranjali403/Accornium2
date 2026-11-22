@@ -1,11 +1,9 @@
 package com.accornium;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import com.finbank.FinBankApplication;
 
-@SpringBootApplication
 public class AccorniumApplication {
     public static void main(String[] args) {
-        SpringApplication.run(AccorniumApplication.class, args);
+        FinBankApplication.main(args);
     }
 }

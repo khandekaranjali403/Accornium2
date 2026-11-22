@@ -1,0 +1,41 @@
+# Git
+.git
+.gitignore
+
+# IDE
+.idea
+.vscode
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Maven
+target/
+*.jar
+*.war
+*.ear
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+.classpath
+.project
+.settings/
+
+# Build
+build/
+dist/
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Other
+README.md
+.env
+.env.local
+

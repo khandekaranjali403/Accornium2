@@ -1,6 +1,9 @@
 package com.finbank.entity;
 
+<<<<<<< HEAD
 import com.fasterxml.jackson.annotation.JsonIgnore;
+=======
+>>>>>>> origin/master
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -38,7 +41,10 @@ public class Loan {
     public enum LoanStatus { ACTIVE, CLOSED, OVERDUE }
 
     public Long getId() { return id; }
+<<<<<<< HEAD
     @JsonIgnore
+=======
+>>>>>>> origin/master
     public User getUser() { return user; }
     public LoanType getType() { return type; }
     public BigDecimal getLoanAmount() { return loanAmount; }

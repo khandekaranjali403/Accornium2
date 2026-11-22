@@ -39,7 +39,17 @@ public class SecurityConfig {
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(
+<<<<<<< HEAD
                     "/api/auth/**",
+=======
+                    "/api/auth/signup",
+                    "/api/auth/login",
+                    "/api/auth/send-otp",
+                    "/api/auth/send-login-otp",
+                    "/api/auth/verify-otp",
+                    "/api/auth/forgot-password",
+                    "/api/auth/reset-password",
+>>>>>>> origin/master
                     "/api/health"
                 ).permitAll()
                 .anyRequest().authenticated()
@@ -55,7 +65,11 @@ public class SecurityConfig {
         config.setAllowedOrigins(List.of(frontendUrl, "http://localhost:3000", "http://localhost:5173"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
+<<<<<<< HEAD
         config.setExposedHeaders(List.of("Authorization", "Content-Disposition"));
+=======
+        config.setExposedHeaders(List.of("Authorization"));
+>>>>>>> origin/master
         config.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

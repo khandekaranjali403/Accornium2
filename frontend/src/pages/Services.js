@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import SectionHeading from '../components/SectionHeading';
 
 const services = [
@@ -29,18 +28,13 @@ const services = [
   },
 ];
 
-const pages = [
-  { title: 'Home', to: '/', desc: 'Get an overview of Accornium, our work, and the results we deliver.' },
-  { title: 'About', to: '/about', desc: 'Meet our team and learn about the values behind our engineering.' },
-  { title: 'Services', to: '/services', desc: 'Explore the capabilities we bring to your next product.' },
-  { title: 'Portfolio', to: '/portfolio', desc: 'Browse examples of products and platforms we have built.' },
-  { title: 'Contact', to: '/contact', desc: 'Tell us about your project and start a conversation with our team.' },
-  { title: 'Log in', to: '/login', desc: 'Sign in to your account to continue where you left off.' },
-  { title: 'Sign up', to: '/signup', desc: 'Create an account to get started with Accornium.' },
-  { title: 'Verify Email', to: '/verify-email', desc: 'Confirm your email address with the verification code sent to your inbox.' },
-];
-
 function Services() {
+  const [services, setServices] = useState([]);
+
+  useEffect(() => {
+    api.getServices().then(setServices);
+  }, []);
+
   return (
     <div className="container section">
       <SectionHeading

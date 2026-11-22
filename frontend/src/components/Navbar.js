@@ -52,6 +52,7 @@ function Navbar({ darkMode, onToggleTheme }) {
               {link.label}
             </NavLink>
           ))}
+<<<<<<< HEAD
           {authenticated ? (
             <button className="nav-logout" type="button" onClick={logout}>Log out</button>
           ) : (
@@ -62,6 +63,14 @@ function Navbar({ darkMode, onToggleTheme }) {
               </NavLink>
             </>
           )}
+=======
+          <NavLink className="nav-login" to="/login" onClick={() => setOpen(false)}>
+            Login
+          </NavLink>
+          <NavLink className="nav-signup" to="/signup" onClick={() => setOpen(false)}>
+            Sign Up
+          </NavLink>
+>>>>>>> origin/master
         </nav>
         <button
           className="theme-toggle"

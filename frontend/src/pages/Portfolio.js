@@ -1,16 +1,14 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import SectionHeading from '../components/SectionHeading';
-
-const projects = [
-  { title: 'FinTrack', category: 'FinTech · Web App', desc: 'A personal finance dashboard built with React and Spring Boot microservices.' },
-  { title: 'MedConnect', category: 'HealthTech · Mobile', desc: 'Telemedicine platform connecting patients and doctors in real time.' },
-  { title: 'ShopSphere', category: 'E-commerce · Web', desc: 'Headless commerce platform with a Java backend and React storefront.' },
-  { title: 'LogiFlow', category: 'Logistics · SaaS', desc: 'Real-time fleet tracking and route optimization dashboard.' },
-  { title: 'EduSpark', category: 'EdTech · Web App', desc: 'Learning management system serving 50,000+ students.' },
-  { title: 'HireHub', category: 'HR Tech · SaaS', desc: 'Applicant tracking system with automated candidate scoring.' },
-];
+import { api } from '../services/api';
 
 function Portfolio() {
+  const [projects, setProjects] = useState([]);
+
+  useEffect(() => {
+    api.getProjects().then(setProjects);
+  }, []);
+
   return (
     <div className="container section">
       <SectionHeading

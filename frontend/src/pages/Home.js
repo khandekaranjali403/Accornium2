@@ -1,22 +1,15 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import SectionHeading from '../components/SectionHeading';
-
-const stats = [
-  { value: '120+', label: 'Projects Delivered' },
-  { value: '60+', label: 'Happy Clients' },
-  { value: '8', label: 'Years of Experience' },
-  { value: '25+', label: 'Engineers' },
-];
-
-const services = [
-  { title: 'Web Development', desc: 'Responsive, high-performance web apps built with React and modern tooling.' },
-  { title: 'Backend Engineering', desc: 'Robust APIs and microservices powered by Java Spring Boot.' },
-  { title: 'Mobile Apps', desc: 'Cross-platform mobile experiences for iOS and Android.' },
-  { title: 'Cloud & DevOps', desc: 'CI/CD pipelines, containerization, and cloud infrastructure on AWS/Azure/GCP.' },
-];
+import { api } from '../services/api';
 
 function Home() {
+  const [content, setContent] = useState({ stats: [], services: [] });
+
+  useEffect(() => {
+    api.getHome().then(setContent);
+  }, []);
+
   return (
     <div>
       <section className="hero">
@@ -43,7 +36,7 @@ function Home() {
       </section>
 
       <section className="stats container">
-        {stats.map((s) => (
+        {content.stats.map((s) => (
           <div className="stat" key={s.label}>
             <h3>{s.value}</h3>
             <p>{s.label}</p>
@@ -58,7 +51,7 @@ function Home() {
           subtitle="From product strategy to deployment, our team handles the full software lifecycle."
         />
         <div className="grid grid-4">
-          {services.map((s) => (
+          {content.services.map((s) => (
             <div className="card" key={s.title}>
               <h3>{s.title}</h3>
               <p>{s.desc}</p>

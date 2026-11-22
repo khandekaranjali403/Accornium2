@@ -1,6 +1,9 @@
 package com.finbank.entity;
 
+<<<<<<< HEAD
 import com.fasterxml.jackson.annotation.JsonIgnore;
+=======
+>>>>>>> origin/master
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -41,7 +44,10 @@ public class BillPayment {
     public enum PaymentStatus { SUCCESS, FAILED, PENDING }
 
     public Long getId() { return id; }
+<<<<<<< HEAD
     @JsonIgnore
+=======
+>>>>>>> origin/master
     public User getUser() { return user; }
     public Account getAccount() { return account; }
     public BillType getBillType() { return billType; }

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import SectionHeading from '../components/SectionHeading';
-
-const API_BASE = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080';
+import { api } from '../services/api';
 
 const initialState = { name: '', email: '', phone: '', subject: '', message: '' };
 
@@ -17,12 +16,7 @@ function Contact() {
     e.preventDefault();
     setStatus({ state: 'loading', error: '' });
     try {
-      const res = await fetch(`${API_BASE}/api/contact`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
-      });
-      if (!res.ok) throw new Error('Failed to send message');
+      await api.submitContact(form);
       setStatus({ state: 'success', error: '' });
       setForm(initialState);
     } catch (err) {

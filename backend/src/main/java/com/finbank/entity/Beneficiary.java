@@ -1,6 +1,9 @@
 package com.finbank.entity;
 
+<<<<<<< HEAD
 import com.fasterxml.jackson.annotation.JsonIgnore;
+=======
+>>>>>>> origin/master
 import jakarta.persistence.*;
 
 @Entity
@@ -25,7 +28,10 @@ public class Beneficiary {
     private String ifsc;
 
     public Long getId() { return id; }
+<<<<<<< HEAD
     @JsonIgnore
+=======
+>>>>>>> origin/master
     public User getUser() { return user; }
     public String getName() { return name; }
     public String getAccountNumber() { return accountNumber; }

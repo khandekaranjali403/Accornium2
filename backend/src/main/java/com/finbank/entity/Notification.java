@@ -1,6 +1,9 @@
 package com.finbank.entity;
 
+<<<<<<< HEAD
 import com.fasterxml.jackson.annotation.JsonIgnore;
+=======
+>>>>>>> origin/master
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
@@ -26,7 +29,10 @@ public class Notification {
     private LocalDateTime createdAt = LocalDateTime.now();
 
     public Long getId() { return id; }
+<<<<<<< HEAD
     @JsonIgnore
+=======
+>>>>>>> origin/master
     public User getUser() { return user; }
     public String getTitle() { return title; }
     public String getMessage() { return message; }

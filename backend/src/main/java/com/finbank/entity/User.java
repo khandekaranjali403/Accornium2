@@ -1,6 +1,9 @@
 package com.finbank.entity;
 
+<<<<<<< HEAD
 import com.fasterxml.jackson.annotation.JsonIgnore;
+=======
+>>>>>>> origin/master
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
@@ -38,7 +41,10 @@ public class User {
     public Long getId() { return id; }
     public String getName() { return name; }
     public String getEmail() { return email; }
+<<<<<<< HEAD
     @JsonIgnore
+=======
+>>>>>>> origin/master
     public String getPassword() { return password; }
     public Role getRole() { return role; }
     public boolean isActive() { return active; }

@@ -1,20 +1,14 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import SectionHeading from '../components/SectionHeading';
-
-const values = [
-  { title: 'Quality First', desc: 'We write clean, tested, maintainable code and stand behind it.' },
-  { title: 'Transparency', desc: 'Clear communication and predictable delivery timelines.' },
-  { title: 'Partnership', desc: 'We work as an extension of your team, not just a vendor.' },
-];
-
-const team = [
-  { name: 'Aarav Sharma', role: 'Founder & CEO' },
-  { name: 'Priya Nair', role: 'Head of Engineering' },
-  { name: 'Rohan Mehta', role: 'Lead Backend Architect' },
-  { name: 'Sara Khan', role: 'Lead Frontend Engineer' },
-];
+import { api } from '../services/api';
 
 function About() {
+  const [content, setContent] = useState({ values: [], team: [] });
+
+  useEffect(() => {
+    api.getAbout().then(setContent);
+  }, []);
+
   return (
     <div className="container section">
       <SectionHeading
@@ -24,7 +18,7 @@ function About() {
       />
 
       <div className="grid grid-3">
-        {values.map((v) => (
+        {content.values.map((v) => (
           <div className="card" key={v.title}>
             <h3>{v.title}</h3>
             <p>{v.desc}</p>
@@ -36,7 +30,7 @@ function About() {
         <h2>Meet the Team</h2>
       </div>
       <div className="grid grid-4">
-        {team.map((t) => (
+        {content.team.map((t) => (
           <div className="card team-card" key={t.name}>
             <div className="avatar" aria-hidden="true">{t.name.charAt(0)}</div>
             <h3>{t.name}</h3>

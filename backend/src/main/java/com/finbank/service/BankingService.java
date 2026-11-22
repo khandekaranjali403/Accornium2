@@ -3,6 +3,7 @@ package com.finbank.service;
 import com.finbank.dto.*;
 import com.finbank.entity.*;
 import com.finbank.repository.*;
+<<<<<<< HEAD
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -20,12 +21,23 @@ import java.time.YearMonth;
 import java.time.format.DateTimeParseException;
 import java.util.*;
 import java.security.SecureRandom;
+=======
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.*;
+>>>>>>> origin/master
 import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 public class BankingService {
+<<<<<<< HEAD
     private static final SecureRandom CARD_RANDOM = new SecureRandom();
 
+=======
+>>>>>>> origin/master
     private final UserLookupService users;
     private final AccountRepository accounts;
     private final TransactionRepository transactions;
@@ -58,8 +70,12 @@ public class BankingService {
         a.setAccountNumber(String.format("%012d", ThreadLocalRandom.current().nextLong(100000000000L, 999999999999L)));
         a.setType(req.type());
         a.setBalance(req.openingBalance() == null ? BigDecimal.ZERO : req.openingBalance());
+<<<<<<< HEAD
         String normalizedBranch = normalizeBranch(req.branch());
         a.setBranch(normalizedBranch == null ? "Mumbai" : normalizedBranch);
+=======
+        a.setBranch(req.branch() == null ? "Mumbai" : req.branch());
+>>>>>>> origin/master
         Account saved = accounts.save(a);
         if (saved.getBalance().signum() > 0) {
             record(saved, "Opening Balance", Transaction.TransactionType.CREDIT, saved.getBalance());
@@ -69,6 +85,7 @@ public class BankingService {
 
     public List<Account> accounts(String email) { return accounts.findByUser(user(email)); }
 
+<<<<<<< HEAD
     public Account account(String email, Long accountId) {
         return accounts.findByIdAndUser(accountId, user(email))
                 .orElseThrow(() -> new IllegalArgumentException("Account not found"));
@@ -91,6 +108,8 @@ public class BankingService {
         return accounts.save(account);
     }
 
+=======
+>>>>>>> origin/master
     public List<Transaction> transactions(String email) {
         return transactions.findByAccountInOrderByTransactionDateDesc(accounts(email));
     }
@@ -162,6 +181,7 @@ public class BankingService {
 
     public List<BankCard> cards(String email) { return cards.findByUser(user(email)); }
 
+<<<<<<< HEAD
     @Transactional
     public BankCard applyForCreditCard(String email, CardApplicationRequest request) {
         BankCard card = new BankCard();
@@ -175,6 +195,8 @@ public class BankingService {
         return cards.save(card);
     }
 
+=======
+>>>>>>> origin/master
     public BankCard toggleCard(String email, Long cardId, boolean freeze) {
         User user = user(email);
         BankCard card = cards.findByIdAndUser(cardId, user)
@@ -222,12 +244,16 @@ public class BankingService {
     public List<Statement> statements(String email) { return statements.findByUserOrderByGeneratedAtDesc(user(email)); }
 
     public Statement generateStatement(String email, Long accountId, String period) {
+<<<<<<< HEAD
         YearMonth statementPeriod = parseStatementPeriod(period);
+=======
+>>>>>>> origin/master
         User user = user(email);
         Account account = accounts.findByIdAndUser(accountId, user)
                 .orElseThrow(() -> new IllegalArgumentException("Account not found"));
         Statement s = new Statement();
         s.setUser(user); s.setAccount(account); s.setPeriod(period);
+<<<<<<< HEAD
         s.setFileName(statementFileName(account, statementPeriod));
         return statements.save(s);
     }
@@ -364,6 +390,12 @@ public class BankingService {
 
     public record StatementFile(String fileName, String contentType, byte[] content) { }
 
+=======
+        s.setFileName("statement-" + account.getAccountNumber() + "-" + period.replaceAll("\\s+", "-") + ".pdf");
+        return statements.save(s);
+    }
+
+>>>>>>> origin/master
     public Map<String, Object> dashboard(String email) {
         User user = user(email);
         List<Account> list = accounts.findByUser(user);
@@ -377,12 +409,15 @@ public class BankingService {
                 "unreadNotifications", unread);
     }
 
+<<<<<<< HEAD
     private String normalizeBranch(String branch) {
         if (branch == null) return null;
         String trimmed = branch.trim();
         return trimmed.isEmpty() ? null : trimmed;
     }
 
+=======
+>>>>>>> origin/master
     private void record(Account account, String description, Transaction.TransactionType type, BigDecimal amount) {
         Transaction tx = new Transaction();
         tx.setAccount(account); tx.setDescription(description); tx.setType(type);

@@ -10,6 +10,7 @@ public record OtpRequest(
         @NotBlank @Email String email,
         @JsonAlias("code")
         @NotBlank @Pattern(regexp = "\\d{6}", message = "OTP must contain 6 digits")
+<<<<<<< HEAD
         String otp,
         @JsonAlias({"purpose", "verificationType"})
         String purpose
@@ -18,3 +19,7 @@ public record OtpRequest(
         this(email, otp, null);
     }
 }
+=======
+        String otp
+) {}
+>>>>>>> origin/master

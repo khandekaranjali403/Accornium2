@@ -1,9 +1,6 @@
 package com.finbank.entity;
 
-<<<<<<< HEAD
 import com.fasterxml.jackson.annotation.JsonIgnore;
-=======
->>>>>>> origin/master
 import jakarta.persistence.*;
 import java.time.LocalDate;
 
@@ -39,10 +36,7 @@ public class BankCard {
     public enum CardStatus { ACTIVE, FROZEN, BLOCKED }
 
     public Long getId() { return id; }
-<<<<<<< HEAD
     @JsonIgnore
-=======
->>>>>>> origin/master
     public User getUser() { return user; }
     public String getCardNumberMasked() { return cardNumberMasked; }
     public String getHolderName() { return holderName; }

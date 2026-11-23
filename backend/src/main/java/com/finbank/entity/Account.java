@@ -1,9 +1,6 @@
 package com.finbank.entity;
 
-<<<<<<< HEAD
 import com.fasterxml.jackson.annotation.JsonIgnore;
-=======
->>>>>>> origin/master
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 
@@ -32,10 +29,7 @@ public class Account {
     public enum AccountType { SAVINGS, CURRENT }
 
     public Long getId() { return id; }
-<<<<<<< HEAD
     @JsonIgnore
-=======
->>>>>>> origin/master
     public User getUser() { return user; }
     public String getAccountNumber() { return accountNumber; }
     public AccountType getType() { return type; }

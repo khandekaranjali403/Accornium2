@@ -3,21 +3,15 @@ package com.finbank.exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
-<<<<<<< HEAD
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-=======
->>>>>>> origin/master
 
 import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-<<<<<<< HEAD
     private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
-=======
->>>>>>> origin/master
 
     @ExceptionHandler(IllegalArgumentException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -46,10 +40,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public Map<String, Object> handleGeneral(Exception ex) {
-<<<<<<< HEAD
         log.error("Unhandled request exception", ex);
-=======
->>>>>>> origin/master
         return Map.of(
                 "success", false,
                 "message", "Internal server error"

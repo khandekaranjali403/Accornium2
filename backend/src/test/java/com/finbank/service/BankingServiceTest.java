@@ -1,6 +1,7 @@
 package com.finbank.service;
 
 import com.finbank.dto.AccountRequest;
+import com.finbank.dto.LoanApplicationRequest;
 import com.finbank.dto.LoanPaymentRequest;
 import com.finbank.dto.TransferRequest;
 import com.finbank.entity.*;
@@ -13,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -112,6 +114,37 @@ class BankingServiceTest {
         verify(loans).save(loan);
         verify(accounts).save(account);
         verify(transactions).save(any(Transaction.class));
+    }
+
+    @Test
+    void applyForLoanCreatesActiveLoanWithMonthlyEmiDate() {
+        User user = user("user@example.com");
+        when(users.byEmail("user@example.com")).thenReturn(user);
+        when(loans.save(any(Loan.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        Loan loan = bankingService.applyForLoan("user@example.com",
+                new LoanApplicationRequest(Loan.LoanType.HOME,
+                        new BigDecimal("100000.00"), new BigDecimal("5000.00")));
+
+        assertSame(user, loan.getUser());
+        assertEquals(Loan.LoanType.HOME, loan.getType());
+        assertEquals(new BigDecimal("100000.00"), loan.getLoanAmount());
+        assertEquals(new BigDecimal("100000.00"), loan.getOutstandingAmount());
+        assertEquals(new BigDecimal("5000.00"), loan.getEmiAmount());
+        assertEquals(LocalDate.now().plusMonths(1), loan.getNextEmiDate());
+        assertEquals(Loan.LoanStatus.ACTIVE, loan.getStatus());
+        verify(loans).save(loan);
+    }
+
+    @Test
+    void applyForLoanRejectsEmiLargerThanPrincipal() {
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+                () -> bankingService.applyForLoan("user@example.com",
+                        new LoanApplicationRequest(Loan.LoanType.PERSONAL,
+                                new BigDecimal("1000.00"), new BigDecimal("1000.01"))));
+
+        assertEquals("EMI amount cannot exceed the loan amount", exception.getMessage());
+        verify(loans, never()).save(any());
     }
 
     private User user(String email) {

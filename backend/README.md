@@ -48,6 +48,30 @@ API:
 
 `http://localhost:8080`
 
+## Loan APIs
+
+All loan endpoints require the authenticated user's bearer token. `GET /api/loans`
+lists that user's loans. Submit an application with `POST /api/loans`:
+
+```json
+{
+  "type": "PERSONAL",
+  "loanAmount": 100000,
+  "emiAmount": 5000
+}
+```
+
+The application creates an active loan with the full amount outstanding and the
+first EMI due one month later. Pay an amount from one of the user's accounts with
+`POST /api/loans/{loanId}/pay`:
+
+```json
+{
+  "accountId": 1,
+  "amount": 5000
+}
+```
+
 ## Deployment
 
 Deploy the `frontend` folder to Vercel with:

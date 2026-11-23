@@ -93,6 +93,14 @@ PATCH /api/notifications/{id}/read
 
 ## Loans
 GET /api/loans
+POST /api/loans
+
+{
+  "type": "HOME",
+  "loanAmount": 100000,
+  "emiAmount": 8884.88
+}
+
 POST /api/loans/{id}/pay
 
 {

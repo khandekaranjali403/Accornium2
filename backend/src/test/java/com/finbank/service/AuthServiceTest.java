@@ -105,7 +105,6 @@ class AuthServiceTest {
 
     @Test
     void verifyLoginOtpRejectsInvalidOtp() {
-        when(userRepository.findByEmailIgnoreCase("user@example.com")).thenReturn(Optional.of(user("user@example.com", "encoded")));
         when(otpService.verify("user@example.com", "LOGIN", "123456")).thenReturn(false);
 
         assertThrows(IllegalArgumentException.class,

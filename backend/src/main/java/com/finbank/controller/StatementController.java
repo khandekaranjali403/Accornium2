@@ -1,12 +1,9 @@
 package com.finbank.controller;
 import com.finbank.service.BankingService;
-<<<<<<< HEAD
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-=======
->>>>>>> origin/master
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +20,6 @@ public class StatementController {
                            @RequestParam String period) {
         return service.generateStatement(a.getName(), accountId, period);
     }
-<<<<<<< HEAD
 
     @GetMapping("/{id}/download")
     public ResponseEntity<byte[]> download(Authentication a, @PathVariable Long id,
@@ -35,6 +31,4 @@ public class StatementController {
                         ContentDisposition.attachment().filename(file.fileName()).build().toString())
                 .body(file.content());
     }
-=======
->>>>>>> origin/master
 }

@@ -29,12 +29,6 @@ const services = [
 ];
 
 function Services() {
-  const [services, setServices] = useState([]);
-
-  useEffect(() => {
-    api.getServices().then(setServices);
-  }, []);
-
   return (
     <div className="container section">
       <SectionHeading

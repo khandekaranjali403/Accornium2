@@ -8,11 +8,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-<<<<<<< HEAD
 import java.util.Locale;
 
-=======
->>>>>>> origin/master
 @Service
 public class AuthService {
 
@@ -48,14 +45,9 @@ public class AuthService {
         user.setActive(true);
 
         userRepository.save(user);
-<<<<<<< HEAD
         String token = jwtService.generateToken(user.getEmail(), user.getId());
 
         return new AuthResponse(token, user.getId(), user.getName(),
-=======
-
-        return new AuthResponse(null, user.getId(), user.getName(),
->>>>>>> origin/master
                 user.getEmail(), "Signup successful");
     }
 
@@ -74,7 +66,6 @@ public class AuthService {
                 user.getEmail(), "Login successful");
     }
 
-<<<<<<< HEAD
     public String sendOtp(String email, String purpose) {
         String normalizedEmail = email == null ? "" : email.trim().toLowerCase();
         String normalizedPurpose = purpose == null || purpose.isBlank() ? "LOGIN" : purpose.trim().toUpperCase(Locale.ROOT);
@@ -100,29 +91,10 @@ public class AuthService {
         String normalizedPurpose = purpose == null || purpose.isBlank() ? "LOGIN" : purpose.trim().toUpperCase(Locale.ROOT);
 
         boolean valid = otpService.verify(normalizedEmail, normalizedPurpose, request.otp());
-=======
-    public String sendLoginOtp(String email) {
-        String normalizedEmail = email.trim().toLowerCase();
-        otpService.createOtp(normalizedEmail, "LOGIN");
-        return "OTP sent successfully";
-    }
-
-    public AuthResponse verifyLoginOtp(OtpRequest request) {
-        User user = userRepository.findByEmailIgnoreCase(request.email().trim())
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
-
-        boolean valid = otpService.verify(
-                request.email().trim().toLowerCase(),
-                "LOGIN",
-                request.otp()
-        );
-
->>>>>>> origin/master
         if (!valid) {
             throw new IllegalArgumentException("Invalid or expired OTP");
         }
 
-<<<<<<< HEAD
         if ("SIGNUP".equals(normalizedPurpose)) {
             User user = userRepository.findByEmailIgnoreCase(normalizedEmail)
                     .orElseThrow(() -> new IllegalArgumentException("User not found"));
@@ -140,15 +112,12 @@ public class AuthService {
             throw new IllegalArgumentException("Account is inactive");
         }
 
-=======
->>>>>>> origin/master
         String token = jwtService.generateToken(user.getEmail(), user.getId());
 
         return new AuthResponse(token, user.getId(), user.getName(),
                 user.getEmail(), "OTP login successful");
     }
 
-<<<<<<< HEAD
     public AuthResponse verifyLoginOtp(OtpRequest request) {
         return verifyOtp(request, "LOGIN");
     }
@@ -157,8 +126,6 @@ public class AuthService {
         return verifyOtp(request, "SIGNUP");
     }
 
-=======
->>>>>>> origin/master
     public String forgotPassword(ForgotPasswordRequest request) {
         userRepository.findByEmailIgnoreCase(request.email().trim())
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));

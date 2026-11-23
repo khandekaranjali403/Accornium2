@@ -582,6 +582,13 @@ ul { list-style: none; margin: 0; padding: 0; }
 .finbank-card-application .finbank-primary-button { width: 100%; margin-top: 0.5rem; }
 .finbank-application-disclaimer { display: block; margin-top: 1rem; color: var(--gray); font-size: 0.67rem; line-height: 1.5; }
 .finbank-loan-list { display: grid; gap: 1rem; }
+.finbank-loan-management { display: grid; gap: 1.25rem; }
+.finbank-loan-form { margin-top: 0; }
+.finbank-loan-copy { margin: -0.5rem 0 1rem; color: var(--gray); font-size: 0.78rem; }
+.finbank-loan-emi-preview { margin-top: 1rem; padding: 0.85rem 1rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; border-radius: 9px; background: var(--light-bg); color: var(--gray); font-size: 0.82rem; }
+.finbank-loan-emi-preview strong { color: var(--text); font-size: 1rem; text-align: right; }
+.finbank-loan-disclaimer { margin: 0.7rem 0 0; color: var(--gray); font-size: 0.72rem; line-height: 1.5; }
+.finbank-loan-list-section > h2 { margin: 0 0 0.75rem; font-size: 1rem; }
 .finbank-loan-card { padding: 1.25rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); }
 .finbank-loan-card-heading { display: flex; align-items: center; gap: 0.85rem; }
 .finbank-loan-mark { width: 42px; height: 42px; flex: 0 0 auto; display: grid; place-items: center; border-radius: 12px; background: #e8f1ff; color: #176bc2; font-size: 1.25rem; }
@@ -590,7 +597,7 @@ ul { list-style: none; margin: 0; padding: 0; }
 .finbank-loan-card-heading > strong small { display: block; margin-top: 0.2rem; color: var(--gray); font-size: 0.68rem; font-weight: 500; }
 .finbank-loan-progress { height: 7px; margin: 1.2rem 0 0.8rem; overflow: hidden; border-radius: 999px; background: var(--light-bg); }
 .finbank-loan-progress span { height: 100%; display: block; border-radius: inherit; background: linear-gradient(90deg, #176bc2, #48a0eb); }
-.finbank-loan-details { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; }
+.finbank-loan-details { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.75rem; }
 .finbank-loan-details span { display: grid; gap: 0.3rem; color: var(--gray); font-size: 0.7rem; }
 .finbank-loan-details strong { color: var(--text); font-size: 0.8rem; }
 .finbank-statements-page { margin-bottom: 1rem; }
@@ -862,9 +869,9 @@ ul { list-style: none; margin: 0; padding: 0; }
 
 /* Grid & cards */
 .grid { display: grid; gap: 1.5rem; }
-.grid-2 { grid-template-columns: repeat(2, 1fr); }
-.grid-3 { grid-template-columns: repeat(3, 1fr); }
-.grid-4 { grid-template-columns: repeat(4, 1fr); }
+.grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 
 .card {
   background: var(--light-bg);
@@ -1007,56 +1014,6 @@ ul { list-style: none; margin: 0; padding: 0; }
 }
 .contact-info p { color: #d1d5db; }
 
-/* Authentication */
-.auth-page {
-  max-width: 520px;
-  min-height: 560px;
-  margin: 0 auto;
-  padding: 5rem 1.5rem;
-}
-
-.auth-card {
-  background: var(--light-bg);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 2rem;
-}
-
-.auth-card h1 { margin-top: 0; }
-.auth-card > p { color: var(--gray); }
-
-.auth-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-  margin-top: 1.5rem;
-}
-
-.auth-form label {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  font-weight: 600;
-  font-size: 0.9rem;
-}
-
-.auth-form input {
-  padding: 0.7rem 0.9rem;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  font-family: inherit;
-  font-size: 1rem;
-}
-
-.auth-form input:focus {
-  outline: 2px solid rgba(79, 70, 229, 0.25);
-  border-color: var(--primary);
-}
-
-.auth-form .btn { width: 100%; }
-.auth-switch { text-align: center; margin-bottom: 0; }
-.auth-switch a { color: var(--primary); font-weight: 700; }
-
 /* OTP verification */
 .otp-page {
   min-height: calc(100vh - 74px);
@@ -1118,7 +1075,7 @@ ul { list-style: none; margin: 0; padding: 0; }
 .footer {
   background: var(--dark-surface);
   color: #d1d5db;
-  padding: 3rem 1.5rem 1rem;
+  padding: 3rem 0 1rem;
 }
 .footer-inner {
   display: grid;
@@ -1131,7 +1088,7 @@ ul { list-style: none; margin: 0; padding: 0; }
 .copyright {
   text-align: center;
   border-top: 1px solid rgba(255, 255, 255, 0.18);
-  padding-top: 1rem;
+  padding: 1rem 1.5rem 0;
   font-size: 0.85rem;
 }
 
@@ -1191,17 +1148,8 @@ ul { list-style: none; margin: 0; padding: 0; }
     border-bottom: 1px solid var(--border);
     width: 100%;
   }
-<<<<<<< HEAD
   .nav-links .nav-signup { margin: 0.5rem 1.5rem 1rem; width: calc(100% - 3rem); text-align: center; }
   .nav-links .nav-logout { margin: 0.5rem 1.5rem 1rem; }
-=======
-
-  .otp-page { grid-template-columns: minmax(0, 1fr); max-width: 560px; margin: 0 auto; padding: 1.5rem; }
-  .otp-brand-panel { min-height: 230px; }
-  .bank-building { bottom: 2rem; height: 120px; }
-  .bank-promise { margin-top: 4rem; }
-  .otp-card { min-height: 390px; }
->>>>>>> origin/master
 }
 
 @media (max-width: 600px) {

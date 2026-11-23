@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { calculateMonthlyEmi } from '../services/loanCalculations';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080';
+const API_URL = process.env.REACT_APP_API_URL || process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080';
 const tabs = [
   { id: 'overview', label: 'Dashboard', icon: '▦', endpoint: '/api/dashboard' },
   { id: 'accounts', label: 'Accounts', icon: '▣', endpoint: '/api/accounts' },
@@ -15,6 +16,10 @@ const tabs = [
   { id: 'beneficiaries', label: 'Beneficiaries', icon: '♧', endpoint: '/api/beneficiaries' },
   { id: 'notifications', label: 'Notifications', icon: '♧', endpoint: '/api/notifications' },
 ];
+const loanProducts = {
+  HOME: { label: 'Home', annualRate: 8.5, minTermMonths: 12, maxTermMonths: 360, defaultTermMonths: 120 },
+  CAR: { label: 'Car', annualRate: 9.5, minTermMonths: 12, maxTermMonths: 84, defaultTermMonths: 60 },
+};
 
 async function apiRequest(path, options = {}) {
   const token = window.sessionStorage.getItem('finbank-token');
@@ -455,22 +460,155 @@ function HdfcCardVisual({ card }) {
   );
 }
 
-function LoansView({ loans }) {
-  if (!loans.length) return <p className="finbank-empty">You have no active loans.</p>;
+function LoansView({ loans, accounts, busy, onApply, onPay }) {
+  const payableLoans = loans.filter((loan) => loan.status !== 'CLOSED');
+  const [application, setApplication] = useState({ type: 'HOME', loanAmount: '', termMonths: String(loanProducts.HOME.defaultTermMonths) });
+  const [payment, setPayment] = useState({ loanId: '', accountId: '', amount: '' });
+  const product = loanProducts[application.type];
+  const principal = Number(application.loanAmount);
+  const termMonths = Number(application.termMonths);
+  const estimatedEmi = Number.isFinite(principal) && principal > 0 && termMonths >= product.minTermMonths && termMonths <= product.maxTermMonths
+    ? calculateMonthlyEmi(principal, product.annualRate, termMonths)
+    : null;
+  const selectedLoan = payableLoans.find((loan) => String(loan.id) === payment.loanId);
+
+  const submitApplication = async (event) => {
+    event.preventDefault();
+    if (estimatedEmi == null) return;
+    await onApply({
+      type: application.type,
+      loanAmount: principal,
+      emiAmount: estimatedEmi,
+    });
+  };
+
+  const submitPayment = async (event) => {
+    event.preventDefault();
+    await onPay({
+      loanId: payment.loanId,
+      accountId: Number(payment.accountId),
+      amount: Number(payment.amount),
+    });
+  };
+
   return (
-    <div className="finbank-loan-list">
-      {loans.map((loan) => {
-        const principal = Number(loan.loanAmount || 0);
-        const outstanding = Number(loan.outstandingAmount || 0);
-        const paidPercent = principal > 0 ? Math.min(100, Math.max(0, ((principal - outstanding) / principal) * 100)) : 0;
-        return (
-          <article className="finbank-loan-card" key={loan.id}>
-            <div className="finbank-loan-card-heading"><span className="finbank-loan-mark" aria-hidden="true">⌂</span><div><h2>{String(loan.type || 'Loan').toLowerCase()} loan</h2><span className={`finbank-card-status status-${String(loan.status || '').toLowerCase()}`}>{loan.status || 'ACTIVE'}</span></div><strong>{money(outstanding)}<small>Outstanding</small></strong></div>
-            <div className="finbank-loan-progress"><span style={{ width: `${paidPercent}%` }} /></div>
-            <div className="finbank-loan-details"><span>Original amount<strong>{money(principal)}</strong></span><span>Monthly EMI<strong>{money(loan.emiAmount)}</strong></span><span>Next due<strong>{loan.nextEmiDate || '—'}</strong></span></div>
-          </article>
-        );
-      })}
+    <div className="finbank-loan-management">
+      <form className="finbank-feature-form finbank-loan-form" onSubmit={submitApplication}>
+        <h3>Apply for a home or car loan</h3>
+        <p className="finbank-loan-copy">Choose a loan type, amount and term to calculate your estimated monthly EMI.</p>
+        <div className="finbank-form-fields">
+          <label>Loan type
+            <select
+              value={application.type}
+              onChange={(event) => {
+                const type = event.target.value;
+                setApplication({ ...application, type, termMonths: String(loanProducts[type].defaultTermMonths) });
+              }}
+            >
+              <option value="HOME">Home loan</option>
+              <option value="CAR">Car loan</option>
+            </select>
+          </label>
+          <label>Requested amount (₹)
+            <input
+              type="number"
+              min="1"
+              step="0.01"
+              required
+              placeholder="For example, 100000"
+              value={application.loanAmount}
+              onChange={(event) => setApplication({ ...application, loanAmount: event.target.value })}
+            />
+          </label>
+          <label>Term (months)
+            <input
+              type="number"
+              min={product.minTermMonths}
+              max={product.maxTermMonths}
+              step="1"
+              required
+              value={application.termMonths}
+              onChange={(event) => setApplication({ ...application, termMonths: event.target.value })}
+            />
+          </label>
+          <label>Indicative annual rate
+            <input type="text" readOnly value={`${product.annualRate}% p.a.`} />
+          </label>
+        </div>
+        <div className="finbank-loan-emi-preview">
+          <span>Estimated monthly EMI</span>
+          <strong>{estimatedEmi == null ? 'Enter a valid amount and term to calculate' : money(estimatedEmi)}</strong>
+        </div>
+        <p className="finbank-loan-disclaimer">Indicative demo rates only: home 8.5% p.a.; car 9.5% p.a. Final rates may vary by lender and eligibility.</p>
+        <button className="finbank-primary-button" type="submit" disabled={busy}>
+          {busy ? 'Submitting…' : 'Submit application'}
+        </button>
+      </form>
+
+      <section className="finbank-loan-list-section">
+        <h2>Your loans</h2>
+        {loans.length ? (
+          <div className="finbank-loan-list">
+            {loans.map((loan) => {
+              const loanPrincipal = Number(loan.loanAmount || 0);
+              const outstanding = Number(loan.outstandingAmount || 0);
+              const paidPercent = loanPrincipal > 0 ? Math.min(100, Math.max(0, ((loanPrincipal - outstanding) / loanPrincipal) * 100)) : 0;
+              return (
+                <article className="finbank-loan-card" key={loan.id}>
+                  <div className="finbank-loan-card-heading"><span className="finbank-loan-mark" aria-hidden="true">{loan.type === 'CAR' ? '⌑' : '⌂'}</span><div><h2>{String(loan.type || 'Loan').toLowerCase()} loan</h2><span className={`finbank-card-status status-${String(loan.status || '').toLowerCase()}`}>{loan.status || 'ACTIVE'}</span></div><strong>{money(outstanding)}<small>Outstanding</small></strong></div>
+                  <div className="finbank-loan-progress"><span style={{ width: `${paidPercent}%` }} /></div>
+                  <div className="finbank-loan-details"><span>Original amount<strong>{money(loanPrincipal)}</strong></span><span>Monthly EMI<strong>{money(loan.emiAmount)}</strong></span><span>Next due<strong>{loan.nextEmiDate || '—'}</strong></span></div>
+                </article>
+              );
+            })}
+          </div>
+        ) : <p className="finbank-empty">No loans yet. Submit an application above to get started.</p>}
+      </section>
+
+      {payableLoans.length > 0 && (
+        <form className="finbank-feature-form finbank-loan-form" onSubmit={submitPayment}>
+          <h3>Pay a loan</h3>
+          <p className="finbank-loan-copy">Choose an active loan and the account to make your payment from.</p>
+          <div className="finbank-form-fields">
+            <label>Loan
+              <select
+                required
+                value={payment.loanId}
+                onChange={(event) => {
+                  const loan = payableLoans.find((item) => String(item.id) === event.target.value);
+                  const outstanding = Number(loan?.outstandingAmount || 0);
+                  const suggestedPayment = Math.min(Number(loan?.emiAmount || outstanding), outstanding);
+                  setPayment({ ...payment, loanId: event.target.value, amount: suggestedPayment ? suggestedPayment.toFixed(2) : '' });
+                }}
+              >
+                <option value="">Select a loan</option>
+                {payableLoans.map((loan) => <option key={loan.id} value={loan.id}>{loan.type} · {money(loan.outstandingAmount)} outstanding</option>)}
+              </select>
+            </label>
+            <label>Pay from account
+              <select required value={payment.accountId} onChange={(event) => setPayment({ ...payment, accountId: event.target.value })}>
+                <option value="">Select an account</option>
+                {accounts.map((account) => <option key={account.id} value={account.id}>{account.type} · {account.accountNumber}</option>)}
+              </select>
+            </label>
+            <label>Payment amount (₹)
+              <input
+                type="number"
+                min="0.01"
+                max={selectedLoan?.outstandingAmount}
+                step="0.01"
+                required
+                value={payment.amount}
+                onChange={(event) => setPayment({ ...payment, amount: event.target.value })}
+              />
+            </label>
+          </div>
+          {accounts.length === 0 && <p className="finbank-loan-disclaimer">Open a bank account before making a loan payment.</p>}
+          <button className="finbank-primary-button" type="submit" disabled={busy || !selectedLoan || accounts.length === 0}>
+            {busy ? 'Processing…' : 'Make payment'}
+          </button>
+        </form>
+      )}
     </div>
   );
 }
@@ -592,14 +730,6 @@ function FeatureForm({ tab, records, onSubmit, busy, onSwitchTab }) {
       input('amount', 'Amount', 'number'),
     ];
     submitLabel = 'Pay bill';
-  } else if (tab === 'loans') {
-    const payableLoans = (records.loans || []).filter((loan) => loan.status !== 'CLOSED');
-    fields = [
-      select('loanId', 'Loan', payableLoans.map((loan) => ({ value: loan.id, label: `${loan.type} · ${loan.outstandingAmount} outstanding` }))),
-      select('accountId', 'Pay from account', (records.accounts || []).map((a) => ({ value: a.id, label: `${a.type} · ${a.accountNumber}` }))),
-      input('amount', 'Payment amount', 'number'),
-    ];
-    submitLabel = 'Pay loan';
   } else if (tab === 'statements') {
     fields = [
       select('accountId', 'Account', (records.accounts || []).map((a) => ({ value: a.id, label: `${a.type} · ${a.accountNumber}` }))),
@@ -731,10 +861,6 @@ function FinBankDashboard({ darkMode, onToggleTheme }) {
       accountId: Number(values.accountId),
       amount: Number(values.amount),
     }, 'Bill payment completed.');
-    if (activeTab === 'loans') return runAction(`/api/loans/${values.loanId}/pay`, 'POST', {
-      accountId: Number(values.accountId),
-      amount: Number(values.amount),
-    }, 'Loan payment completed.');
     if (activeTab === 'statements') {
       const query = new URLSearchParams({ accountId: values.accountId, period: values.period });
       return runAction(`/api/statements/generate?${query}`, 'POST', null, 'Statement generated.');
@@ -807,7 +933,7 @@ function FinBankDashboard({ darkMode, onToggleTheme }) {
     : activeTab === 'profile'
       ? recordsFrom(activeData)
       : recordsFrom(activeData);
-  const formRecords = { ...supportData, accounts: supportData.accounts, beneficiaries: supportData.beneficiaries, loans: activeTab === 'loans' ? records : supportData.loans };
+  const formRecords = { ...supportData, accounts: supportData.accounts, beneficiaries: supportData.beneficiaries };
   const overviewUser = activeData?.user;
   const overviewCredits = records
     .filter((transaction) => transaction.type === 'CREDIT')
@@ -875,12 +1001,20 @@ function FinBankDashboard({ darkMode, onToggleTheme }) {
                       {activeTab === 'accounts' && <AccountsView accounts={records} />}
                       {activeTab === 'transactions' && <TransactionsView transactions={records} />}
                       {activeTab === 'cards' && <CardsView cards={records} onAction={(path, method) => runAction(path, method, null, 'Card status updated.')} onApply={(holderName) => runAction('/api/cards', 'POST', { holderName }, 'Credit card application submitted.')} onSelectTab={setActiveTab} busy={busy} />}
-                      {activeTab === 'loans' && <LoansView loans={records} />}
+                      {activeTab === 'loans' && (
+                        <LoansView
+                          loans={records}
+                          accounts={supportData.accounts || []}
+                          busy={busy}
+                          onApply={(values) => runAction('/api/loans', 'POST', values, `${loanProducts[values.type].label} loan application submitted.`)}
+                          onPay={(values) => runAction(`/api/loans/${values.loanId}/pay`, 'POST', { accountId: values.accountId, amount: values.amount }, 'Loan payment completed.')}
+                        />
+                      )}
                       {activeTab === 'statements' && <StatementsView statements={records} onDownload={downloadStatement} downloadingStatement={downloadingStatementId} />}
                       {activeTab === 'payments' && <BillCategoryGrid />}
                       {activeTab === 'payments' && <BillHistory bills={records} />}
                       {!['accounts', 'transactions', 'cards', 'loans', 'statements', 'payments', 'transfers'].includes(activeTab) && <DataTable records={records} tab={activeTab} onAction={(path, method) => runAction(path, method, null)} />}
-                      <FeatureForm tab={activeTab} records={{ ...formRecords, loans: activeTab === 'loans' ? records : formRecords.loans }} onSubmit={submitForm} busy={busy} onSwitchTab={setActiveTab} />
+                      {activeTab !== 'loans' && <FeatureForm tab={activeTab} records={formRecords} onSubmit={submitForm} busy={busy} onSwitchTab={setActiveTab} />}
                     </>
                   )}
                 </>
